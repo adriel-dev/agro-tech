@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-open class BeansConfig {
+open class AnimalUseCasesBeans {
 
     @Bean
     open fun saveAnimal(animalRepository: AnimalRepository): SaveAnimal {
