@@ -1,5 +1,6 @@
 package br.com.agrotech.persistence.owner.repository
 
+import br.com.agrotech.persistence.owner.exception.OwnerNotFoundException
 import br.com.agrotech.domain.owner.model.Owner
 import br.com.agrotech.domain.owner.port.spi.persistence.OwnerRepository
 import br.com.agrotech.persistence.owner.entity.OwnerEntity
@@ -16,14 +17,14 @@ class OwnerRepositoryImpl(
     }
 
     override fun updateOwner(ownerId: UUID, owner: Owner): Owner {
-        val foundOwner = ownerJpaRepository.findById(ownerId)
-            .orElseThrow { RuntimeException("Owner with id [$ownerId] does not exist!") }
+        val foundOwner = ownerJpaRepository.findById(ownerId).orElseThrow { OwnerNotFoundException(ownerId) }
         foundOwner.updateFrom(OwnerEntity.fromDomainOwner(owner))
         return ownerJpaRepository.save(foundOwner).toDomainOwner()
     }
 
     override fun findOwnerById(ownerId: UUID): Owner {
-        return ownerJpaRepository.findById(ownerId).get().toDomainOwner()
+        val foundOwner = ownerJpaRepository.findById(ownerId).orElseThrow { OwnerNotFoundException(ownerId) }
+        return foundOwner.toDomainOwner()
     }
 
     override fun findAllOwners(): List<Owner> {

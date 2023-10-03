@@ -1,5 +1,6 @@
 package br.com.agrotech.persistence.animal.repository
 
+import br.com.agrotech.persistence.animal.exception.AnimalNotFoundException
 import br.com.agrotech.domain.animal.model.Animal
 import br.com.agrotech.domain.animal.port.spi.persistence.AnimalRepository
 import br.com.agrotech.persistence.animal.entity.AnimalEntity
@@ -16,13 +17,14 @@ open class AnimalRepositoryImpl(
     }
 
     override fun updateAnimal(animalId: UUID, animal: Animal): Animal {
-        val foundAnimal = animalJpaRepository.findById(animalId).orElseThrow { RuntimeException("Animal with id [$animalId] does not exist!") }
+        val foundAnimal = animalJpaRepository.findById(animalId).orElseThrow { AnimalNotFoundException(animalId) }
         foundAnimal.updateFrom(AnimalEntity.fromDomainAnimal(animal))
         return animalJpaRepository.save(foundAnimal).toDomainAnimal()
     }
 
     override fun findAnimalById(animalId: UUID): Animal {
-        return animalJpaRepository.findById(animalId).get().toDomainAnimal()
+        val foundAnimal = animalJpaRepository.findById(animalId).orElseThrow { AnimalNotFoundException(animalId) }
+        return foundAnimal.toDomainAnimal()
     }
 
     override fun findAllAnimals(): List<Animal> {

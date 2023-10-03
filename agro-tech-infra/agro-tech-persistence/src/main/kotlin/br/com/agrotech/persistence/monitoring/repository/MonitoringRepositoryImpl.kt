@@ -1,5 +1,6 @@
 package br.com.agrotech.persistence.monitoring.repository
 
+import br.com.agrotech.persistence.monitoring.exception.MonitoringNotFoundException
 import br.com.agrotech.domain.monitoring.model.Monitoring
 import br.com.agrotech.domain.monitoring.port.spi.persistence.MonitoringRepository
 import br.com.agrotech.persistence.monitoring.entity.MonitoringEntity
@@ -16,14 +17,14 @@ class MonitoringRepositoryImpl(
     }
 
     override fun updateMonitoring(monitoringId: UUID, monitoring: Monitoring): Monitoring {
-        val foundMonitoring = monitoringJpaRepository.findById(monitoringId)
-            .orElseThrow { RuntimeException("Monitoring with id [$monitoringId] does not exist!") }
+        val foundMonitoring = monitoringJpaRepository.findById(monitoringId).orElseThrow { MonitoringNotFoundException(monitoringId) }
         foundMonitoring.updateFrom(MonitoringEntity.fromDomainMonitoring(monitoring))
         return monitoringJpaRepository.save(foundMonitoring).toDomainMonitoring()
     }
 
     override fun findMonitoringById(monitoringId: UUID): Monitoring {
-        return monitoringJpaRepository.findById(monitoringId).get().toDomainMonitoring()
+        val foundMonitoring = monitoringJpaRepository.findById(monitoringId).orElseThrow { MonitoringNotFoundException(monitoringId) }
+        return foundMonitoring.toDomainMonitoring()
     }
 
     override fun findAllMonitorings(): List<Monitoring> {
