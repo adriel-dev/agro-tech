@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-class MonitoringRepositoryImpl(
+open class MonitoringRepositoryImpl(
     private val monitoringJpaRepository: MonitoringJpaRepository
 ) : MonitoringRepository {
 

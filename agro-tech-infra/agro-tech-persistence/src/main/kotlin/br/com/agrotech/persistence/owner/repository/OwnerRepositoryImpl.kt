@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-class OwnerRepositoryImpl(
+open class OwnerRepositoryImpl(
     private val ownerJpaRepository: OwnerJpaRepository
 ) : OwnerRepository {
 

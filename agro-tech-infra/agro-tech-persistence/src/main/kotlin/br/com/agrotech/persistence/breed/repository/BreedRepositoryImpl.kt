@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-class BreedRepositoryImpl(
+open class BreedRepositoryImpl(
     private val breedJpaRepository: BreedJpaRepository
 ) : BreedRepository {
 

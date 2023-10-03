@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-class FarmRepositoryImpl(
+open class FarmRepositoryImpl(
     private val farmJpaRepository: FarmJpaRepository
 ) : FarmRepository {
 
