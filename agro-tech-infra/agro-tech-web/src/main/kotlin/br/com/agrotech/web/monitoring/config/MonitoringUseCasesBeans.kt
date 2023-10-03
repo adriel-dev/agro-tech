@@ -17,7 +17,7 @@ open class MonitoringUseCasesBeans {
 
     @Bean
     open fun saveMonitoring(monitoringRepository: MonitoringRepository): SaveMonitoring {
-        return SaveMonitoringUseCase(monitoringRepository);
+        return SaveMonitoringUseCase(monitoringRepository)
     }
 
     @Bean
