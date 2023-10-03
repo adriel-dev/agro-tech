@@ -1,7 +1,7 @@
 package br.com.agrotech.web.employee.dto
 
 import br.com.agrotech.domain.employee.model.Employee
-import br.com.agrotech.domain.farm.model.Farm
+import br.com.agrotech.web.farm.dto.FarmDTO
 import java.time.LocalDate
 import java.util.*
 
@@ -12,7 +12,7 @@ class EmployeeDTO(
     val birthDate: LocalDate? = null,
     val role: String? = null,
     val salary: Double? = null,
-    val farm: Farm? = null
+    val farm: FarmDTO? = null
 ) {
 
     fun toDomainEmployee(): Employee {
@@ -23,7 +23,7 @@ class EmployeeDTO(
             this.birthDate,
             this.role,
             this.salary,
-            this.farm
+            this.farm?.toDomainFarm()
         )
     }
 
@@ -36,7 +36,7 @@ class EmployeeDTO(
                 employee.birthDate,
                 employee.role,
                 employee.salary,
-                employee.farm
+                FarmDTO.fromDomainFarm(employee.farm!!)
             )
         }
     }

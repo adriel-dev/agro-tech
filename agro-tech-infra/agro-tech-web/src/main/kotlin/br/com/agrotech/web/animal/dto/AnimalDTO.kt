@@ -2,9 +2,9 @@ package br.com.agrotech.web.animal.dto
 
 import br.com.agrotech.domain.animal.model.Animal
 import br.com.agrotech.domain.animal.model.SexEnum
-import br.com.agrotech.domain.breed.model.Breed
-import br.com.agrotech.domain.farm.model.Farm
 import br.com.agrotech.domain.monitoring.model.Monitoring
+import br.com.agrotech.web.breed.dto.BreedDTO
+import br.com.agrotech.web.farm.dto.FarmDTO
 import java.time.LocalDate
 import java.util.*
 
@@ -16,9 +16,9 @@ class AnimalDTO(
     val saleDate: LocalDate? = null,
     val acquisitionValue: Double? = null,
     val saleValue: Double? = null,
-    val breed: Breed? = null,
+    val breed: BreedDTO? = null,
     val monitorings: List<Monitoring>? = null,
-    val farm: Farm? = null
+    val farm: FarmDTO? = null
 ) {
 
     fun toDomainAnimal(): Animal {
@@ -30,9 +30,9 @@ class AnimalDTO(
             this.saleDate,
             this.acquisitionValue,
             this.saleValue,
-            this.breed,
+            this.breed?.toDomainBreed(),
             this.monitorings,
-            this.farm
+            this.farm?.toDomainFarm()
         )
     }
 
@@ -46,9 +46,9 @@ class AnimalDTO(
                 animal.saleDate,
                 animal.acquisitionValue,
                 animal.saleValue,
-                animal.breed,
+                BreedDTO.fromDomainBreed(animal.breed!!),
                 animal.monitorings,
-                animal.farm
+                FarmDTO.fromDomainFarm(animal.farm!!)
             )
         }
     }

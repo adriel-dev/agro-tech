@@ -1,8 +1,8 @@
 package br.com.agrotech.web.farm.dto
 
-import br.com.agrotech.domain.employee.model.Employee
 import br.com.agrotech.domain.farm.model.Farm
-import br.com.agrotech.domain.owner.model.Owner
+import br.com.agrotech.web.employee.dto.EmployeeDTO
+import br.com.agrotech.web.owner.dto.OwnerDTO
 import java.util.*
 
 class FarmDTO(
@@ -11,8 +11,8 @@ class FarmDTO(
     val address: String? = null,
     val city: String? = null,
     val state: String? = null,
-    val employees: List<Employee>? = null,
-    val owner: Owner? = null
+    val employees: List<EmployeeDTO>? = null,
+    val owner: OwnerDTO? = null
 ) {
 
     fun toDomainFarm(): Farm {
@@ -22,8 +22,8 @@ class FarmDTO(
             this.address,
             this.city,
             this.state,
-            this.employees,
-            this.owner
+            this.employees?.map { it.toDomainEmployee() },
+            this.owner?.toDomainOwner()
         )
     }
 
@@ -35,8 +35,8 @@ class FarmDTO(
                 farm.address,
                 farm.city,
                 farm.state,
-                farm.employees,
-                farm.owner
+                farm.employees?.map { EmployeeDTO.fromDomainEmployee(it) },
+                OwnerDTO.fromDomainOwner(farm.owner!!)
             )
         }
     }

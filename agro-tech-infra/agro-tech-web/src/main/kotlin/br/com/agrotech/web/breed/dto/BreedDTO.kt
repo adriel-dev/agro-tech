@@ -1,20 +1,20 @@
 package br.com.agrotech.web.breed.dto
 
 import br.com.agrotech.domain.breed.model.Breed
-import br.com.agrotech.domain.species.model.Species
+import br.com.agrotech.web.species.dto.SpeciesDTO
 import java.util.*
 
 class BreedDTO(
     val id: UUID? = null,
     val name: String? = null,
-    val species: Species? = null
+    val species: SpeciesDTO? = null
 ) {
 
     fun toDomainBreed(): Breed {
         return Breed(
             this.id,
             this.name,
-            this.species
+            this.species?.toDomainSpecies()
         )
     }
 
@@ -23,7 +23,7 @@ class BreedDTO(
             return BreedDTO(
                 breed.id,
                 breed.name,
-                breed.species
+                SpeciesDTO.fromDomainSpecies(breed.species!!)
             )
         }
     }
