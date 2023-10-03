@@ -6,8 +6,7 @@ import br.com.agrotech.domain.animal.port.api.usecase.SaveAnimal
 import br.com.agrotech.domain.animal.port.api.usecase.UpdateAnimal
 import br.com.agrotech.web.animal.dto.AnimalDTO
 import org.springframework.http.ResponseEntity
-import org.springframework.http.ResponseEntity.created
-import org.springframework.http.ResponseEntity.ok
+import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 import java.util.*
@@ -40,9 +39,9 @@ class AnimalController(
     }
 
     @DeleteMapping("/delete/{animalId}")
-    fun deleteAnimalById(@PathVariable animalId: String): ResponseEntity<Void> {
+    fun deleteAnimalById(@PathVariable animalId: String): ResponseEntity<Unit> {
         deleteAnimalById.delete(UUID.fromString(animalId))
-        return ResponseEntity.noContent().build()
+        return noContent().build()
     }
 
 }
