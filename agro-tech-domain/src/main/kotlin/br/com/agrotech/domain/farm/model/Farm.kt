@@ -1,6 +1,5 @@
 package br.com.agrotech.domain.farm.model
 
-import br.com.agrotech.domain.animal.model.Animal
 import br.com.agrotech.domain.employee.model.Employee
 import br.com.agrotech.domain.owner.model.Owner
 import java.util.*

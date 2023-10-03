@@ -8,7 +8,7 @@ class FindAllBreedsUseCase(
     private val breedRepository: BreedRepository
 ) : FindAllBreeds {
 
-    override fun findAllBreeds(): List<Breed> {
+    override fun find(): List<Breed> {
         return breedRepository.findAllBreeds()
     }
 
