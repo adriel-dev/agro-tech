@@ -1,10 +1,8 @@
 package br.com.agrotech.persistence.farm.entity
 
 import br.com.agrotech.domain.farm.model.Farm
-import br.com.agrotech.persistence.animal.entity.AnimalEntity
 import br.com.agrotech.persistence.employee.entity.EmployeeEntity
 import br.com.agrotech.persistence.owner.entity.OwnerEntity
-import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import java.util.*
 
@@ -19,7 +17,7 @@ class FarmEntity(
     var state: String? = null,
     @OneToMany(mappedBy = "farm")
     var employees: List<EmployeeEntity>? = null,
-    @OneToOne
+    @ManyToOne
     var owner: OwnerEntity? = null
 ) {
 
