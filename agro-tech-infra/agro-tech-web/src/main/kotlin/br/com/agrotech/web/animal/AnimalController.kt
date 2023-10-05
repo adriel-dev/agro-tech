@@ -5,6 +5,8 @@ import br.com.agrotech.domain.animal.port.api.usecase.FindAnimalById
 import br.com.agrotech.domain.animal.port.api.usecase.SaveAnimal
 import br.com.agrotech.domain.animal.port.api.usecase.UpdateAnimal
 import br.com.agrotech.web.animal.dto.AnimalDTO
+import br.com.agrotech.web.animal.dto.request.SaveAnimalRequestDTO
+import br.com.agrotech.web.animal.dto.response.SaveAnimalResponseDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
@@ -21,9 +23,9 @@ class AnimalController(
 ) {
 
     @PostMapping("/save")
-    fun saveAnimal(@RequestBody animalDTO: AnimalDTO): ResponseEntity<AnimalDTO> {
-        val createdAnimal = saveAnimal.save(animalDTO.toDomainAnimal())
-        return created(URI.create("/api/v1/animal/find/${createdAnimal.id.toString()}")).body(AnimalDTO.fromDomainAnimal(createdAnimal))
+    fun saveAnimal(@RequestBody saveAnimalRequestDTO: SaveAnimalRequestDTO): ResponseEntity<SaveAnimalResponseDTO> {
+        val createdAnimal = saveAnimal.save(saveAnimalRequestDTO.toDomainAnimal())
+        return created(URI.create("/api/v1/animal/find/${createdAnimal.id.toString()}")).body((SaveAnimalResponseDTO.fromDomainAnimal(createdAnimal)))
     }
 
     @GetMapping("/find/{animalId}")
