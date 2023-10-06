@@ -5,7 +5,7 @@ import br.com.agrotech.web.animal.dto.SexEnumDTO
 import java.time.LocalDate
 import java.util.*
 
-class SaveAnimalResponseDTO(
+data class SaveAnimalResponseDTO(
     val id: UUID? = null,
     val name: String? = null,
     val sex: SexEnumDTO? = null,
@@ -13,9 +13,9 @@ class SaveAnimalResponseDTO(
     val saleDate: LocalDate? = null,
     val acquisitionValue: Double? = null,
     val saleValue: Double? = null,
-    val breed: Any? = object { val id: UUID? = null },
+    val breed: BreedIdResponseDTO? = null,
     val monitoringIds: List<String>? = listOf(),
-    val farm: Any? = object { val id: UUID? = null }
+    val farm: FarmIdResponseDTO? = null
 ) {
 
     companion object {
@@ -28,11 +28,19 @@ class SaveAnimalResponseDTO(
                 acquisitionValue = animal.acquisitionValue,
                 saleDate = animal.saleDate,
                 saleValue = animal.saleValue,
-                breed = object { val id: UUID? = animal.breed?.id },
+                breed = BreedIdResponseDTO(animal.breed?.id),
                 monitoringIds = animal.monitorings?.map { it.id.toString() },
-                farm = object { val id: UUID? = animal.farm?.id }
+                farm = FarmIdResponseDTO(animal.farm?.id)
             )
         }
     }
 
 }
+
+data class BreedIdResponseDTO(
+    val id: UUID? = null
+)
+
+data class FarmIdResponseDTO(
+    val id: UUID? = null
+)

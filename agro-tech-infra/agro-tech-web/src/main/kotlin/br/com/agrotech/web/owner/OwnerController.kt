@@ -5,6 +5,7 @@ import br.com.agrotech.domain.owner.port.api.usecase.FindOwnerById
 import br.com.agrotech.domain.owner.port.api.usecase.UpdateOwner
 import br.com.agrotech.domain.owner.port.api.usecase.DeleteOwnerById
 import br.com.agrotech.web.owner.dto.OwnerDTO
+import br.com.agrotech.web.owner.dto.request.SaveOwnerRequestDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
@@ -21,8 +22,8 @@ class OwnerController(
 ) {
 
     @PostMapping("/save")
-    fun saveOwner(@RequestBody ownerDTO: OwnerDTO): ResponseEntity<OwnerDTO> {
-        val createdOwner = saveOwner.save(ownerDTO.toDomainOwner())
+    fun saveOwner(@RequestBody saveOwnerRequestDTO: SaveOwnerRequestDTO): ResponseEntity<OwnerDTO> {
+        val createdOwner = saveOwner.save(saveOwnerRequestDTO.toDomainOwner())
         return created(URI.create("/api/v1/owner/find/${createdOwner.id.toString()}")).body(OwnerDTO.fromDomainOwner(createdOwner))
     }
 

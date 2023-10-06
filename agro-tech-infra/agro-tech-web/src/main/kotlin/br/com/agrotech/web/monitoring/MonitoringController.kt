@@ -5,6 +5,8 @@ import br.com.agrotech.domain.monitoring.port.api.usecase.FindMonitoringById
 import br.com.agrotech.domain.monitoring.port.api.usecase.UpdateMonitoring
 import br.com.agrotech.domain.monitoring.port.api.usecase.DeleteMonitoringById
 import br.com.agrotech.web.monitoring.dto.MonitoringDTO
+import br.com.agrotech.web.monitoring.dto.request.SaveMonitoringRequestDTO
+import br.com.agrotech.web.monitoring.dto.response.SaveMonitoringResponseDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
@@ -21,9 +23,9 @@ class MonitoringController(
 ) {
 
     @PostMapping("/save")
-    fun saveMonitoring(@RequestBody monitoringDTO: MonitoringDTO): ResponseEntity<MonitoringDTO> {
-        val createdMonitoring = saveMonitoring.save(monitoringDTO.toDomainMonitoring())
-        return created(URI.create("/api/v1/monitoring/find/${createdMonitoring.id.toString()}")).body(MonitoringDTO.fromDomainMonitoring(createdMonitoring))
+    fun saveMonitoring(@RequestBody saveMonitoringRequestDTO: SaveMonitoringRequestDTO): ResponseEntity<SaveMonitoringResponseDTO> {
+        val createdMonitoring = saveMonitoring.save(saveMonitoringRequestDTO.toDomainMonitoring())
+        return created(URI.create("/api/v1/monitoring/find/${createdMonitoring.id.toString()}")).body(SaveMonitoringResponseDTO.fromDomainMonitoring(createdMonitoring))
     }
 
     @GetMapping("/find/{monitoringId}")

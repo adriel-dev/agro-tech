@@ -5,6 +5,8 @@ import br.com.agrotech.domain.breed.port.api.usecase.FindBreedById
 import br.com.agrotech.domain.breed.port.api.usecase.UpdateBreed
 import br.com.agrotech.domain.breed.port.api.usecase.DeleteBreedById
 import br.com.agrotech.web.breed.dto.BreedDTO
+import br.com.agrotech.web.breed.dto.request.SaveBreedRequestDTO
+import br.com.agrotech.web.breed.dto.response.SaveBreedResponseDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
@@ -21,9 +23,9 @@ class BreedController(
 ) {
 
     @PostMapping("/save")
-    fun saveBreed(@RequestBody breedDTO: BreedDTO): ResponseEntity<BreedDTO> {
-        val createdBreed = saveBreed.save(breedDTO.toDomainBreed())
-        return created(URI.create("/api/v1/breed/find/${createdBreed.id.toString()}")).body(BreedDTO.fromDomainBreed(createdBreed))
+    fun saveBreed(@RequestBody saveBreedRequestDTO: SaveBreedRequestDTO): ResponseEntity<SaveBreedResponseDTO> {
+        val createdBreed = saveBreed.save(saveBreedRequestDTO.toDomainBreed())
+        return created(URI.create("/api/v1/breed/find/${createdBreed.id.toString()}")).body(SaveBreedResponseDTO.fromDomainBreed(createdBreed))
     }
 
     @GetMapping("/find/{breedId}")

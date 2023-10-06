@@ -5,6 +5,8 @@ import br.com.agrotech.domain.employee.port.api.usecase.FindEmployeeById
 import br.com.agrotech.domain.employee.port.api.usecase.UpdateEmployee
 import br.com.agrotech.domain.employee.port.api.usecase.DeleteEmployeeById
 import br.com.agrotech.web.employee.dto.EmployeeDTO
+import br.com.agrotech.web.employee.dto.request.SaveEmployeeRequestDTO
+import br.com.agrotech.web.employee.dto.response.SaveEmployeeResponseDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
@@ -21,9 +23,9 @@ class EmployeeController(
 ) {
 
     @PostMapping("/save")
-    fun saveEmployee(@RequestBody employeeDTO: EmployeeDTO): ResponseEntity<EmployeeDTO> {
-        val createdEmployee = saveEmployee.save(employeeDTO.toDomainEmployee())
-        return created(URI.create("/api/v1/employee/find/${createdEmployee.id.toString()}")).body(EmployeeDTO.fromDomainEmployee(createdEmployee))
+    fun saveEmployee(@RequestBody saveEmployeeRequestDTO: SaveEmployeeRequestDTO): ResponseEntity<SaveEmployeeResponseDTO> {
+        val createdEmployee = saveEmployee.save(saveEmployeeRequestDTO.toDomainEmployee())
+        return created(URI.create("/api/v1/employee/find/${createdEmployee.id.toString()}")).body(SaveEmployeeResponseDTO.fromDomainEmployee(createdEmployee))
     }
 
     @GetMapping("/find/{employeeId}")

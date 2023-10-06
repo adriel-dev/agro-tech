@@ -5,6 +5,8 @@ import br.com.agrotech.domain.farm.port.api.usecase.FindFarmById
 import br.com.agrotech.domain.farm.port.api.usecase.UpdateFarm
 import br.com.agrotech.domain.farm.port.api.usecase.DeleteFarmById
 import br.com.agrotech.web.farm.dto.FarmDTO
+import br.com.agrotech.web.farm.dto.request.SaveFarmRequestDTO
+import br.com.agrotech.web.farm.dto.response.SaveFarmResponseDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
@@ -21,9 +23,9 @@ class FarmController(
 ) {
 
     @PostMapping("/save")
-    fun saveFarm(@RequestBody farmDTO: FarmDTO): ResponseEntity<FarmDTO> {
-        val createdFarm = saveFarm.save(farmDTO.toDomainFarm())
-        return created(URI.create("/api/v1/farm/find/${createdFarm.id.toString()}")).body(FarmDTO.fromDomainFarm(createdFarm))
+    fun saveFarm(@RequestBody saveFarmRequestDTO: SaveFarmRequestDTO): ResponseEntity<SaveFarmResponseDTO> {
+        val createdFarm = saveFarm.save(saveFarmRequestDTO.toDomainFarm())
+        return created(URI.create("/api/v1/farm/find/${createdFarm.id.toString()}")).body(SaveFarmResponseDTO.fromDomainFarm(createdFarm))
     }
 
     @GetMapping("/find/{farmId}")
