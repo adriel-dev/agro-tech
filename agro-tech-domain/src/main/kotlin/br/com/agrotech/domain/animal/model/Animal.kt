@@ -7,16 +7,16 @@ import java.time.LocalDate
 import java.util.*
 
 data class Animal(
-    val id: UUID? = null,
-    val name: String? = null,
-    val sex: SexEnum? = null,
-    val acquisitionDate: LocalDate? = null,
-    val saleDate: LocalDate? = null,
-    val acquisitionValue: Double? = null,
-    val saleValue: Double? = null,
-    val breed: Breed? = null,
-    val monitorings: List<Monitoring>? = null,
-    val farm: Farm? = null
+    var id: UUID? = null,
+    var name: String? = null,
+    var sex: SexEnum? = null,
+    var acquisitionDate: LocalDate? = null,
+    var saleDate: LocalDate? = null,
+    var acquisitionValue: Double? = null,
+    var saleValue: Double? = null,
+    var breed: Breed? = null,
+    var monitorings: List<Monitoring>? = null,
+    var farm: Farm? = null
 )
 
 enum class SexEnum {
