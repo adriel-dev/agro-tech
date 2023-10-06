@@ -1,12 +1,17 @@
 spring:
   application:
-    name: Agrotech
+    name: agrotech
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: password
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: false
+
+api:
+  security:
+    token:
+      secret: ${AGROTECH_TOKEN_SECRET}
