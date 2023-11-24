@@ -7,4 +7,6 @@ import java.util.*
 
 @Repository
 interface AnimalJpaRepository : JpaRepository<AnimalEntity, UUID> {
+    fun findAnimalByIdAndFarmId(animalId: UUID, farmId: UUID): Optional<AnimalEntity>
+    fun findAllByFarmId(farmId: UUID): List<AnimalEntity>
 }

@@ -1,12 +1,12 @@
 package br.com.agrotech.web.security
 
 import br.com.agrotech.persistence.user.repository.UserJpaRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -22,8 +22,9 @@ import org.springframework.web.filter.CorsFilter
 
 @Configuration
 @EnableWebSecurity
-open class SecurityConfiguration @Autowired constructor(
-    private val securityFilter: JWTAuthenticationFilter,
+@EnableMethodSecurity(prePostEnabled = true)
+open class SecurityConfiguration(
+    private val jwtAuthFilter: JWTAuthenticationFilter,
     private val userRepository: UserJpaRepository
 ) {
 
@@ -34,10 +35,16 @@ open class SecurityConfiguration @Autowired constructor(
             .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { authorize ->
                 authorize
-                    .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/v1/auth/register/**").hasRole("ADMIN")
+                    .requestMatchers("/api/v1/species/**").hasRole("ADMIN")
+                    .requestMatchers("/api/v1/breed/**").hasRole("ADMIN")
+                    .requestMatchers("/api/v1/farm/**").hasRole("ADMIN")
+                    .requestMatchers("/api/v1/employee/**").hasRole("OWNER")
+                    .requestMatchers("/error").permitAll()
                     .anyRequest().authenticated()
             }
-            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
     }
 
@@ -49,7 +56,7 @@ open class SecurityConfiguration @Autowired constructor(
     @Bean
     open fun userDetailsService(): UserDetailsService? {
         return UserDetailsService { username: String ->
-            userRepository.findByAgroUsername(username)
+            userRepository.findByAgroUsername(username).get()
         }
     }
 

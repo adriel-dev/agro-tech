@@ -2,16 +2,22 @@ spring:
   application:
     name: agrotech
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/agrotech
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: false
+  flyway:
+    enabled: true
 
 api:
   security:
     token:
       secret: ${AGROTECH_TOKEN_SECRET}
+
+agrotech:
+  image:
+    directory-path: ${AGROTECH_IMAGES_DIRECTORY}

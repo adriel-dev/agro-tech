@@ -4,39 +4,44 @@ import br.com.agrotech.domain.monitoring.port.api.usecase.SaveMonitoring
 import br.com.agrotech.domain.monitoring.port.api.usecase.FindMonitoringById
 import br.com.agrotech.domain.monitoring.port.api.usecase.UpdateMonitoring
 import br.com.agrotech.domain.monitoring.port.api.usecase.DeleteMonitoringById
+import br.com.agrotech.shared.monitoring.MonitoringConverter
 import br.com.agrotech.web.monitoring.dto.MonitoringDTO
 import br.com.agrotech.web.monitoring.dto.request.SaveMonitoringRequestDTO
 import br.com.agrotech.web.monitoring.dto.response.SaveMonitoringResponseDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/monitoring")
-class MonitoringController(
+open class MonitoringController(
     private val saveMonitoring: SaveMonitoring,
     private val findMonitoringById: FindMonitoringById,
     private val updateMonitoring: UpdateMonitoring,
-    private val deleteMonitoringById: DeleteMonitoringById
+    private val deleteMonitoringById: DeleteMonitoringById,
+    private val monitoringConverter: MonitoringConverter
 ) {
 
     @PostMapping("/save")
+    @PreAuthorize("@monitoringPermissionEvaluator.hasPermissionToSave(authentication, #saveMonitoringRequestDTO.animalId)")
     fun saveMonitoring(@RequestBody saveMonitoringRequestDTO: SaveMonitoringRequestDTO): ResponseEntity<SaveMonitoringResponseDTO> {
-        val createdMonitoring = saveMonitoring.save(saveMonitoringRequestDTO.toDomainMonitoring())
-        return created(URI.create("/api/v1/monitoring/find/${createdMonitoring.id.toString()}")).body(SaveMonitoringResponseDTO.fromDomainMonitoring(createdMonitoring))
+        val monitoring = monitoringConverter.saveMonitoringRequestDtoToMonitoring(saveMonitoringRequestDTO)
+        val createdMonitoring = saveMonitoring.save(monitoring)
+        return created(URI.create("/api/v1/monitoring/find/${createdMonitoring.id.toString()}")).body(monitoringConverter.monitoringToSaveMonitoringResponseDto(createdMonitoring))
     }
 
     @GetMapping("/find/{monitoringId}")
     fun findMonitoring(@PathVariable monitoringId: String): ResponseEntity<MonitoringDTO> {
-        val foundMonitoring = MonitoringDTO.fromDomainMonitoring(findMonitoringById.find(UUID.fromString(monitoringId)))
+        val foundMonitoring = monitoringConverter.monitoringToMonitoringDto(findMonitoringById.find(UUID.fromString(monitoringId)))
         return ok().body(foundMonitoring)
     }
 
     @PutMapping("/update/{monitoringId}")
     fun updateMonitoring(@PathVariable monitoringId: String, @RequestBody monitoringDTO: MonitoringDTO): ResponseEntity<MonitoringDTO> {
-        val updatedMonitoring = MonitoringDTO.fromDomainMonitoring(updateMonitoring.update(UUID.fromString(monitoringId), monitoringDTO.toDomainMonitoring()))
+        val updatedMonitoring = monitoringConverter.monitoringToMonitoringDto(updateMonitoring.update(UUID.fromString(monitoringId), monitoringConverter.monitoringDtoToMonitoring(monitoringDTO)))
         return ok().body(updatedMonitoring)
     }
 

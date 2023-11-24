@@ -1,11 +1,14 @@
 package br.com.agrotech.domain.user.model
 
+import br.com.agrotech.domain.farm.model.Farm
 import java.util.*
 
 data class User(
     var id: UUID? = null,
-    var agroUsername: String? = null,
-    var agroPassword: String? = null,
+    var username: String? = null,
+    var password: String? = null,
+    var email: String? = null,
+    var farm: Farm? = null,
     var roles: MutableSet<Role>? = null
 )
 

@@ -7,4 +7,5 @@ import java.util.UUID
 
 @Repository
 interface RoleJpaRepository : JpaRepository<RoleEntity, UUID> {
+    fun findByName(name: String): RoleEntity
 }

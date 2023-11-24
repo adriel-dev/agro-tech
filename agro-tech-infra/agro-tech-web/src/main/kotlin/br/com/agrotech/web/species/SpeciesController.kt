@@ -4,6 +4,7 @@ import br.com.agrotech.domain.species.port.api.usecase.SaveSpecies
 import br.com.agrotech.domain.species.port.api.usecase.FindSpeciesById
 import br.com.agrotech.domain.species.port.api.usecase.UpdateSpecies
 import br.com.agrotech.domain.species.port.api.usecase.DeleteSpeciesById
+import br.com.agrotech.shared.species.SpeciesConverter
 import br.com.agrotech.web.species.dto.SpeciesDTO
 import br.com.agrotech.web.species.dto.request.SaveSpeciesRequestDTO
 import org.springframework.http.ResponseEntity
@@ -18,24 +19,26 @@ class SpeciesController(
     private val saveSpecies: SaveSpecies,
     private val findSpeciesById: FindSpeciesById,
     private val updateSpecies: UpdateSpecies,
-    private val deleteSpeciesById: DeleteSpeciesById
+    private val deleteSpeciesById: DeleteSpeciesById,
+    private val speciesConverter: SpeciesConverter
 ) {
 
     @PostMapping("/save")
     fun saveSpecies(@RequestBody saveSpeciesRequestDTO: SaveSpeciesRequestDTO): ResponseEntity<SpeciesDTO> {
-        val createdSpecies = saveSpecies.save(saveSpeciesRequestDTO.toDomainSpecies())
-        return created(URI.create("/api/v1/species/find/${createdSpecies.id.toString()}")).body(SpeciesDTO.fromDomainSpecies(createdSpecies))
+        val species = speciesConverter.saveSpeciesRequestDtoToSpecies(saveSpeciesRequestDTO)
+        val createdSpecies = saveSpecies.save(species)
+        return created(URI.create("/api/v1/species/find/${createdSpecies.id.toString()}")).body(speciesConverter.speciesToSpeciesDto(createdSpecies))
     }
 
     @GetMapping("/find/{speciesId}")
     fun findSpecies(@PathVariable speciesId: String): ResponseEntity<SpeciesDTO> {
-        val foundSpecies = SpeciesDTO.fromDomainSpecies(findSpeciesById.find(UUID.fromString(speciesId)))
+        val foundSpecies = speciesConverter.speciesToSpeciesDto(findSpeciesById.find(UUID.fromString(speciesId)))
         return ok().body(foundSpecies)
     }
 
     @PutMapping("/update/{speciesId}")
     fun updateSpecies(@PathVariable speciesId: String, @RequestBody speciesDTO: SpeciesDTO): ResponseEntity<SpeciesDTO> {
-        val updatedSpecies = SpeciesDTO.fromDomainSpecies(updateSpecies.update(UUID.fromString(speciesId), speciesDTO.toDomainSpecies()))
+        val updatedSpecies = speciesConverter.speciesToSpeciesDto(updateSpecies.update(UUID.fromString(speciesId), speciesConverter.speciesDtoToSpecies(speciesDTO)))
         return ok().body(updatedSpecies)
     }
 

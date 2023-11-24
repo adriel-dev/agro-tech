@@ -1,6 +1,6 @@
 package br.com.agrotech.persistence.user.entity
 
-import br.com.agrotech.domain.user.model.User
+import br.com.agrotech.persistence.farm.entity.FarmEntity
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -8,24 +8,29 @@ import org.springframework.security.core.userdetails.UserDetails
 import java.util.UUID
 
 @Entity
-@Table(name = "AGRO_USER")
-open class UserEntity(
+@Table(name = "tb_user")
+class UserEntity(
     @Id @GeneratedValue(strategy = GenerationType.UUID)
-    open var id: UUID? = null,
+    var id: UUID? = null,
 
     @Column(name = "username", nullable = false, unique = true)
-    open var agroUsername: String? = null,
+    var agroUsername: String? = null,
 
     @Column(name = "password", nullable = false)
-    open var agroPassword: String? = null,
+    var agroPassword: String? = null,
+
+    var email: String? = null,
+
+    @ManyToOne
+    var farm: FarmEntity? = null,
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "user_roles",
+        name = "tb_user_role",
         joinColumns = [JoinColumn(name = "user_id")],
         inverseJoinColumns = [JoinColumn(name = "role_id")]
     )
-    open var roles: MutableSet<RoleEntity>? = null
+    var roles: MutableSet<RoleEntity>? = null
 ) : UserDetails {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
@@ -54,26 +59,6 @@ open class UserEntity(
 
     override fun isEnabled(): Boolean {
         return true
-    }
-
-    fun toDomainUser(): User {
-        return User(
-            this.id,
-            this.agroUsername,
-            this.agroPassword,
-            this.roles?.map { it.toDomainRole() }?.toMutableSet()
-        )
-    }
-
-    companion object {
-        fun fromDomainUser(user: User): UserEntity {
-            return UserEntity(
-                user.id,
-                user.agroUsername,
-                user.agroPassword,
-                user.roles?.map { RoleEntity.fromDomainRole(it) }?.toMutableSet()
-            )
-        }
     }
 
 }

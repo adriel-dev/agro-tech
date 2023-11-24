@@ -3,32 +3,35 @@ package br.com.agrotech.persistence.species.repository
 import br.com.agrotech.persistence.species.exception.SpeciesNotFoundException
 import br.com.agrotech.domain.species.model.Species
 import br.com.agrotech.domain.species.port.spi.persistence.SpeciesRepository
-import br.com.agrotech.persistence.species.entity.SpeciesEntity
+import br.com.agrotech.shared.species.SpeciesConverter
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
 open class SpeciesRepositoryImpl(
-    private val speciesJpaRepository: SpeciesJpaRepository
+    private val speciesJpaRepository: SpeciesJpaRepository,
+    private val speciesConverter: SpeciesConverter
 ) : SpeciesRepository {
 
     override fun saveSpecies(species: Species): Species {
-        return speciesJpaRepository.save(SpeciesEntity.fromDomainSpecies(species)).toDomainSpecies()
+        val savedSpecies = speciesJpaRepository.save(speciesConverter.speciesToSpeciesEntity(species))
+        return speciesConverter.speciesEntityToSpecies(savedSpecies)
     }
 
     override fun updateSpecies(speciesId: UUID, species: Species): Species {
         val foundSpecies = speciesJpaRepository.findById(speciesId).orElseThrow { SpeciesNotFoundException(speciesId) }
-        foundSpecies.updateFrom(SpeciesEntity.fromDomainSpecies(species))
-        return speciesJpaRepository.save(foundSpecies).toDomainSpecies()
+        foundSpecies.updateFrom(speciesConverter.speciesToSpeciesEntity(species))
+        val savedSpecies = speciesJpaRepository.save(foundSpecies)
+        return speciesConverter.speciesEntityToSpecies(savedSpecies)
     }
 
     override fun findSpeciesById(speciesId: UUID): Species {
         val foundSpecies = speciesJpaRepository.findById(speciesId).orElseThrow { SpeciesNotFoundException(speciesId) }
-        return foundSpecies.toDomainSpecies()
+        return speciesConverter.speciesEntityToSpecies(foundSpecies)
     }
 
     override fun findAllSpecies(): List<Species> {
-        return speciesJpaRepository.findAll().map { it.toDomainSpecies() }
+        return speciesJpaRepository.findAll().map { speciesConverter.speciesEntityToSpecies(it) }
     }
 
     override fun deleteSpeciesById(speciesId: UUID) {

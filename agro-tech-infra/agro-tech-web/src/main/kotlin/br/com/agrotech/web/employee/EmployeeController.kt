@@ -4,6 +4,7 @@ import br.com.agrotech.domain.employee.port.api.usecase.SaveEmployee
 import br.com.agrotech.domain.employee.port.api.usecase.FindEmployeeById
 import br.com.agrotech.domain.employee.port.api.usecase.UpdateEmployee
 import br.com.agrotech.domain.employee.port.api.usecase.DeleteEmployeeById
+import br.com.agrotech.shared.employee.EmployeeConverter
 import br.com.agrotech.web.employee.dto.EmployeeDTO
 import br.com.agrotech.web.employee.dto.request.SaveEmployeeRequestDTO
 import br.com.agrotech.web.employee.dto.response.SaveEmployeeResponseDTO
@@ -19,24 +20,26 @@ class EmployeeController(
     private val saveEmployee: SaveEmployee,
     private val findEmployeeById: FindEmployeeById,
     private val updateEmployee: UpdateEmployee,
-    private val deleteEmployeeById: DeleteEmployeeById
+    private val deleteEmployeeById: DeleteEmployeeById,
+    private val employeeConverter: EmployeeConverter
 ) {
 
     @PostMapping("/save")
     fun saveEmployee(@RequestBody saveEmployeeRequestDTO: SaveEmployeeRequestDTO): ResponseEntity<SaveEmployeeResponseDTO> {
-        val createdEmployee = saveEmployee.save(saveEmployeeRequestDTO.toDomainEmployee())
-        return created(URI.create("/api/v1/employee/find/${createdEmployee.id.toString()}")).body(SaveEmployeeResponseDTO.fromDomainEmployee(createdEmployee))
+        val employee = employeeConverter.saveEmployeeRequestDtoToEmployee(saveEmployeeRequestDTO)
+        val createdEmployee = saveEmployee.save(employee)
+        return created(URI.create("/api/v1/employee/find/${createdEmployee.id.toString()}")).body(employeeConverter.employeeToSaveEmployeeResponseDto(createdEmployee))
     }
 
     @GetMapping("/find/{employeeId}")
     fun findEmployee(@PathVariable employeeId: String): ResponseEntity<EmployeeDTO> {
-        val foundEmployee = EmployeeDTO.fromDomainEmployee(findEmployeeById.find(UUID.fromString(employeeId)))
+        val foundEmployee = employeeConverter.employeeToEmployeeDto(findEmployeeById.find(UUID.fromString(employeeId)))
         return ok().body(foundEmployee)
     }
 
     @PutMapping("/update/{employeeId}")
     fun updateEmployee(@PathVariable employeeId: String, @RequestBody employeeDTO: EmployeeDTO): ResponseEntity<EmployeeDTO> {
-        val updatedEmployee = EmployeeDTO.fromDomainEmployee(updateEmployee.update(UUID.fromString(employeeId), employeeDTO.toDomainEmployee()))
+        val updatedEmployee = employeeConverter.employeeToEmployeeDto(updateEmployee.update(UUID.fromString(employeeId), employeeConverter.employeeDtoToEmployee(employeeDTO)))
         return ok().body(updatedEmployee)
     }
 

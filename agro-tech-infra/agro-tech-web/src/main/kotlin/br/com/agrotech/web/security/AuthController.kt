@@ -2,9 +2,9 @@ package br.com.agrotech.web.security
 
 import br.com.agrotech.web.security.dto.LoginRequestDTO
 import br.com.agrotech.web.security.dto.LoginResponseDTO
-import br.com.agrotech.web.security.user.dto.request.RegisterUserRequestDTO
-import br.com.agrotech.web.security.user.service.AuthService
-import org.springframework.beans.factory.annotation.Autowired
+import br.com.agrotech.web.user.dto.request.RegisterFirstUserRequestDTO
+import br.com.agrotech.web.user.dto.request.RegisterUserRequestDTO
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.PostMapping
@@ -15,7 +15,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/auth")
-class AuthController @Autowired constructor(
+class AuthController(
     private val authService: AuthService
 ) {
 
@@ -25,8 +25,14 @@ class AuthController @Autowired constructor(
     }
 
     @PostMapping("/register")
-    fun register(@RequestBody registerData: RegisterUserRequestDTO): ResponseEntity<Unit> {
+    fun register(@Valid @RequestBody registerData: RegisterUserRequestDTO): ResponseEntity<Unit> {
         authService.register(registerData)
+        return ok().build()
+    }
+
+    @PostMapping("/register/first")
+    fun registerFirstUser(@RequestBody registerData: RegisterFirstUserRequestDTO): ResponseEntity<Unit> {
+        authService.registerFirstUser(registerData)
         return ok().build()
     }
 

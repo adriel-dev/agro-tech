@@ -1,6 +1,8 @@
 package br.com.agrotech.web.security
 
 import br.com.agrotech.persistence.user.entity.UserEntity
+import br.com.agrotech.web.security.exception.JwtGenerateException
+import br.com.agrotech.web.security.exception.JwtTokenExpiredException
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTCreationException
@@ -26,11 +28,11 @@ class TokenService(
                 .withIssuer(appName)
                 .withSubject(user.agroUsername)
                 .withExpiresAt(generateExpirationDate())
+                .withClaim("farmId", user.farm?.id.toString())
                 .sign(algorithm)
         } catch (e: JWTCreationException) {
-            throw RuntimeException("Error generating JWT token!", e)
+            throw JwtGenerateException("Error generating JWT token!")
         }
-
     }
 
     fun validateToken(token: String?): String {
@@ -42,7 +44,7 @@ class TokenService(
                 .verify(token)
                 .subject
         } catch (e: JWTVerificationException) {
-            ""
+            throw JwtTokenExpiredException(e.message!!)
         }
     }
 

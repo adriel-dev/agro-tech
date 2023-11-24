@@ -1,10 +1,12 @@
 package br.com.agrotech.web.security
 
 import br.com.agrotech.persistence.user.repository.UserJpaRepository
+import br.com.agrotech.web.security.exception.JwtTokenExpiredException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
@@ -21,14 +23,23 @@ class JWTAuthenticationFilter @Autowired constructor(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val token = getTokenFromRequestHeader(request)
-        if (token != null) {
-            val username = tokenService.validateToken(token)
-            val user = userRepository.findByAgroUsername(username)
-            val authentication = UsernamePasswordAuthenticationToken(user, null, user.authorities)
-            SecurityContextHolder.getContext().authentication = authentication
+        try {
+            val token = getTokenFromRequestHeader(request)
+            if (token != null) {
+                val username = tokenService.validateToken(token)
+                val userOptional = userRepository.findByAgroUsername(username)
+                if (userOptional.isPresent) {
+                    val user = userOptional.get()
+                    val authentication = UsernamePasswordAuthenticationToken(user, null, user.authorities)
+                    SecurityContextHolder.getContext().authentication = authentication
+                }
+            }
+            filterChain.doFilter(request, response)
+        } catch (e: JwtTokenExpiredException) {
+            response.status = HttpStatus.UNAUTHORIZED.value()
+            response.contentType = "application/json"
+            response.writer.write("{ \"message\": \"Token expired! Login to get a new token!\" }")
         }
-        filterChain.doFilter(request, response)
     }
 
     private fun getTokenFromRequestHeader(request: HttpServletRequest): String? {
