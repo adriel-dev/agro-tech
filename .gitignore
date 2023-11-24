@@ -40,3 +40,4 @@ build/
 
 ### Misc ###
 /${AGROTECH_IMAGES_DIRECTORY}/
+/agrotech.image.directory-path/
