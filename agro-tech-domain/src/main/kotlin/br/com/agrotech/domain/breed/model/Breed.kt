@@ -4,7 +4,7 @@ import br.com.agrotech.domain.species.model.Species
 import java.util.UUID
 
 data class Breed(
-    val id: UUID? = null,
-    val name: String? = null,
-    val species: Species? = null
+    var id: UUID? = null,
+    var name: String? = null,
+    var species: Species? = null
 )

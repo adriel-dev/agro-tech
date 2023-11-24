@@ -5,11 +5,11 @@ import java.time.LocalDate
 import java.util.*
 
 data class Employee(
-    val id: UUID? = null,
-    val name: String? = null,
-    val lastName: String? = null,
-    val birthDate: LocalDate? = null,
-    val role: String? = null,
-    val salary: Double? = null,
-    val farm: Farm? = null
+    var id: UUID? = null,
+    var name: String? = null,
+    var lastName: String? = null,
+    var birthDate: LocalDate? = null,
+    var role: String? = null,
+    var salary: Double? = null,
+    var farm: Farm? = null
 )

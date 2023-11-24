@@ -8,7 +8,7 @@ class SaveBreedUseCase(
     private val breedRepository: BreedRepository
 ) : SaveBreed {
 
-    override fun saveBreed(breed: Breed): Breed {
+    override fun save(breed: Breed): Breed {
         return breedRepository.saveBreed(breed)
     }
 

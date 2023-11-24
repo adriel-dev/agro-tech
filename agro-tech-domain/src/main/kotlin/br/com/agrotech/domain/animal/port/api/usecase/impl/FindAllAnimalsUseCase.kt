@@ -8,7 +8,7 @@ class FindAllAnimalsUseCase(
     private val animalRepository: AnimalRepository
 ) : FindAllAnimals {
 
-    override fun findAllAnimals(): Collection<Animal> {
+    override fun findAllAnimals(): List<Animal> {
         return animalRepository.findAllAnimals()
     }
 

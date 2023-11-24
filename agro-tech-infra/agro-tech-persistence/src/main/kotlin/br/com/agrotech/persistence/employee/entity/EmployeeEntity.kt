@@ -1,13 +1,12 @@
 package br.com.agrotech.persistence.employee.entity
 
-import br.com.agrotech.domain.employee.model.Employee
 import br.com.agrotech.persistence.farm.entity.FarmEntity
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.util.*
 
 @Entity
-@Table(name = "EMPLOYEE")
+@Table(name = "tb_employee")
 class EmployeeEntity (
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     var id: UUID? = null,
@@ -21,38 +20,12 @@ class EmployeeEntity (
 ) {
 
     fun updateFrom(employeeEntity: EmployeeEntity) {
-        this.name = employeeEntity.name
-        this.lastName = employeeEntity.lastName
-        this.birthDate = employeeEntity.birthDate
-        this.role = employeeEntity.role
-        this.salary = employeeEntity.salary
-        this.farm = employeeEntity.farm
-    }
-
-    fun toDomainEmployee(): Employee {
-        return Employee(
-            this.id,
-            this.name,
-            this.lastName,
-            this.birthDate,
-            this.role,
-            this.salary,
-            this.farm?.toDomainFarm()
-        )
-    }
-
-    companion object {
-        fun fromDomainEmployee(employee: Employee?): EmployeeEntity {
-            return EmployeeEntity(
-                employee?.id,
-                employee?.name,
-                employee?.lastName,
-                employee?.birthDate,
-                employee?.role,
-                employee?.salary,
-                FarmEntity.fromDomainFarm(employee?.farm)
-            )
-        }
+        this.name = employeeEntity.name ?: this.name
+        this.lastName = employeeEntity.lastName ?: this.lastName
+        this.birthDate = employeeEntity.birthDate ?: this.birthDate
+        this.role = employeeEntity.role ?: this.role
+        this.salary = employeeEntity.salary ?: this.salary
+        this.farm = employeeEntity.farm ?: this.farm
     }
 
 }
