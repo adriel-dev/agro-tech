@@ -12,6 +12,7 @@
     <modules>
         <module>agro-tech-persistence</module>
         <module>agro-tech-web</module>
+        <module>agro-tech-shared</module>
     </modules>
 
     <artifactId>agro-tech-infra</artifactId>
@@ -27,6 +28,8 @@
 
         <agrotech.domain.version>1.0.0-SNAPSHOT</agrotech.domain.version>
         <agrotech.persistence.version>1.0.0-SNAPSHOT</agrotech.persistence.version>
+        <agrotech.web.version>1.0.0-SNAPSHOT</agrotech.web.version>
+        <agrotech.shared.version>1.0.0-SNAPSHOT</agrotech.shared.version>
     </properties>
 
     <dependencyManagement>
@@ -48,6 +51,16 @@
                 <groupId>br.com.agrotech</groupId>
                 <artifactId>agro-tech-domain</artifactId>
                 <version>${agrotech.domain.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>br.com.agrotech</groupId>
+                <artifactId>agro-tech-web</artifactId>
+                <version>${agrotech.web.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>br.com.agrotech</groupId>
+                <artifactId>agro-tech-shared</artifactId>
+                <version>${agrotech.shared.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
