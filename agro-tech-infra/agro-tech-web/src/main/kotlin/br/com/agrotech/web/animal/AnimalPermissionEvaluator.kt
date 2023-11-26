@@ -25,10 +25,9 @@ class AnimalPermissionEvaluator(
         return user.farm?.id == animal.farm?.id
     }
 
-    fun hasPermissionToUpdateOrDelete(authentication: Authentication, animalId: String): Boolean {
-        val animalUUID = UUID.fromString(animalId)
+    fun hasPermissionToUpdateOrDelete(authentication: Authentication, animalId: UUID): Boolean {
         val user = authentication.principal as UserEntity
-        val animal = animalJpaRepository.findById(animalUUID).orElseThrow { AnimalNotFoundException(animalUUID) }
+        val animal = animalJpaRepository.findById(animalId).orElseThrow { AnimalNotFoundException(animalId) }
         val farmId = animal.farm?.id
         return user.farm?.id == farmId
     }
