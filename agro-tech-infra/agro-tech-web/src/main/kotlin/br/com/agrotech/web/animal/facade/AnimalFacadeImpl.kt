@@ -13,12 +13,14 @@ import br.com.agrotech.web.animal.dto.response.FindAnimalByIdResponseDTO
 import br.com.agrotech.web.animal.dto.response.SaveAnimalResponseDTO
 import br.com.agrotech.web.image.exception.InvalidImageException
 import br.com.agrotech.web.qrcode.dto.QrCodeDTO
+import org.springframework.security.access.prepost.PostAuthorize
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @Component
-class AnimalFacadeImpl(
+open class AnimalFacadeImpl(
     private val saveAnimal: SaveAnimal,
     private val findAnimalById: FindAnimalById,
     private val updateAnimal: UpdateAnimal,
@@ -26,6 +28,7 @@ class AnimalFacadeImpl(
     private val animalConverter: AnimalConverter
 ) : AnimalFacade {
 
+    @PreAuthorize("@animalPermissionEvaluator.hasPermissionToSave(authentication, #saveAnimalRequestDTO)")
     override fun saveAnimal(saveAnimalRequestDTO: SaveAnimalRequestDTO, imageFile: MultipartFile?): SaveAnimalResponseDTO {
         val animal = animalConverter.saveAnimalRequestDtoToAnimal(saveAnimalRequestDTO)
         var image: Image? = null
@@ -41,6 +44,7 @@ class AnimalFacadeImpl(
         return animalConverter.animalToSaveAnimalResponseDto(saveAnimal.save(animal = animal, image = image, imageData = imageData))
     }
 
+    @PostAuthorize("@animalPermissionEvaluator.hasPermissionToGet(authentication, returnObject)")
     override fun findAnimalById(animalId: UUID): FindAnimalByIdResponseDTO {
         val foundData = findAnimalById.find(animalId)
         val responseDto = animalConverter.animalToFindAnimalByIdResponseDto(foundData["animal"] as Animal)
@@ -49,11 +53,13 @@ class AnimalFacadeImpl(
         return responseDto
     }
 
+    @PreAuthorize("@animalPermissionEvaluator.hasPermissionToUpdateOrDelete(authentication, #animalId)")
     override fun updateAnimal(animalId: UUID, animalDto: AnimalDTO): AnimalDTO {
         val animal = animalConverter.animalDtoToAnimal(animalDto)
         return animalConverter.animalToAnimalDto(updateAnimal.update(animalId = animalId, animal = animal))
     }
 
+    @PreAuthorize("@animalPermissionEvaluator.hasPermissionToUpdateOrDelete(authentication, #animalId)")
     override fun deleteAnimalById(animalId: UUID) {
         deleteAnimalById.delete(animalId = animalId)
     }
