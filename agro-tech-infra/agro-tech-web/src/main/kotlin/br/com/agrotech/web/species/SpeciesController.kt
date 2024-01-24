@@ -4,7 +4,7 @@ import br.com.agrotech.domain.species.port.api.usecase.SaveSpecies
 import br.com.agrotech.domain.species.port.api.usecase.FindSpeciesById
 import br.com.agrotech.domain.species.port.api.usecase.UpdateSpecies
 import br.com.agrotech.domain.species.port.api.usecase.DeleteSpeciesById
-import br.com.agrotech.shared.species.SpeciesConverter
+import br.com.agrotech.web.species.converter.SpeciesWebConverter
 import br.com.agrotech.web.species.dto.SpeciesDTO
 import br.com.agrotech.web.species.dto.request.SaveSpeciesRequestDTO
 import org.springframework.http.ResponseEntity
@@ -20,7 +20,7 @@ class SpeciesController(
     private val findSpeciesById: FindSpeciesById,
     private val updateSpecies: UpdateSpecies,
     private val deleteSpeciesById: DeleteSpeciesById,
-    private val speciesConverter: SpeciesConverter
+    private val speciesConverter: SpeciesWebConverter
 ) {
 
     @PostMapping("/save")

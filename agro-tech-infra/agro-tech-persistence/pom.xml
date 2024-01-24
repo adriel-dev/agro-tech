@@ -49,31 +49,11 @@
             <groupId>br.com.agrotech</groupId>
             <artifactId>agro-tech-domain</artifactId>
         </dependency>
-        <dependency>
-            <groupId>br.com.agrotech</groupId>
-            <artifactId>agro-tech-shared</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <executable>true</executable>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 
 </project>

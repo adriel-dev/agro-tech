@@ -3,14 +3,14 @@ package br.com.agrotech.persistence.monitoring.repository
 import br.com.agrotech.persistence.monitoring.exception.MonitoringNotFoundException
 import br.com.agrotech.domain.monitoring.model.Monitoring
 import br.com.agrotech.domain.monitoring.port.spi.persistence.MonitoringRepository
-import br.com.agrotech.shared.monitoring.MonitoringConverter
+import br.com.agrotech.persistence.monitoring.converter.MonitoringPersistenceConverter
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
 open class MonitoringRepositoryImpl(
     private val monitoringJpaRepository: MonitoringJpaRepository,
-    private val monitoringConverter: MonitoringConverter
+    private val monitoringConverter: MonitoringPersistenceConverter
 ) : MonitoringRepository {
 
     override fun saveMonitoring(monitoring: Monitoring): Monitoring {

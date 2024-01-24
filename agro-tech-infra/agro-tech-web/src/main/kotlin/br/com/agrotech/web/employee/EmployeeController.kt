@@ -4,7 +4,7 @@ import br.com.agrotech.domain.employee.port.api.usecase.SaveEmployee
 import br.com.agrotech.domain.employee.port.api.usecase.FindEmployeeById
 import br.com.agrotech.domain.employee.port.api.usecase.UpdateEmployee
 import br.com.agrotech.domain.employee.port.api.usecase.DeleteEmployeeById
-import br.com.agrotech.shared.employee.EmployeeConverter
+import br.com.agrotech.web.employee.converter.EmployeeWebConverter
 import br.com.agrotech.web.employee.dto.EmployeeDTO
 import br.com.agrotech.web.employee.dto.request.SaveEmployeeRequestDTO
 import br.com.agrotech.web.employee.dto.response.SaveEmployeeResponseDTO
@@ -21,7 +21,7 @@ class EmployeeController(
     private val findEmployeeById: FindEmployeeById,
     private val updateEmployee: UpdateEmployee,
     private val deleteEmployeeById: DeleteEmployeeById,
-    private val employeeConverter: EmployeeConverter
+    private val employeeConverter: EmployeeWebConverter
 ) {
 
     @PostMapping("/save")

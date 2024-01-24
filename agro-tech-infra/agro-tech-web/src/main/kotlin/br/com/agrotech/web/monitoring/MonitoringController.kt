@@ -4,7 +4,7 @@ import br.com.agrotech.domain.monitoring.port.api.usecase.SaveMonitoring
 import br.com.agrotech.domain.monitoring.port.api.usecase.FindMonitoringById
 import br.com.agrotech.domain.monitoring.port.api.usecase.UpdateMonitoring
 import br.com.agrotech.domain.monitoring.port.api.usecase.DeleteMonitoringById
-import br.com.agrotech.shared.monitoring.MonitoringConverter
+import br.com.agrotech.web.monitoring.converter.MonitoringWebConverter
 import br.com.agrotech.web.monitoring.dto.MonitoringDTO
 import br.com.agrotech.web.monitoring.dto.request.SaveMonitoringRequestDTO
 import br.com.agrotech.web.monitoring.dto.response.SaveMonitoringResponseDTO
@@ -22,7 +22,7 @@ open class MonitoringController(
     private val findMonitoringById: FindMonitoringById,
     private val updateMonitoring: UpdateMonitoring,
     private val deleteMonitoringById: DeleteMonitoringById,
-    private val monitoringConverter: MonitoringConverter
+    private val monitoringConverter: MonitoringWebConverter
 ) {
 
     @PostMapping("/save")

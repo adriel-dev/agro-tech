@@ -3,9 +3,9 @@ package br.com.agrotech.web.image.impl
 import br.com.agrotech.domain.image.model.Image
 import br.com.agrotech.domain.image.port.spi.LoadImagePort
 import br.com.agrotech.domain.image.port.spi.SaveImagePort
+import br.com.agrotech.persistence.image.converter.ImagePersistenceConverter
 import br.com.agrotech.persistence.image.exception.ImageNotFoundException
 import br.com.agrotech.persistence.image.repository.ImageJpaRepository
-import br.com.agrotech.shared.image.ImageConverter
 import br.com.agrotech.web.infra.ImageFileConfigurationProperties
 import java.io.File
 import java.io.FileInputStream
@@ -15,7 +15,7 @@ import java.util.*
 class ImageFileSystemAdapter(
     private val imageConfigProperties: ImageFileConfigurationProperties,
     private val imageJpaRepository: ImageJpaRepository,
-    private val imageConverter: ImageConverter
+    private val imageConverter: ImagePersistenceConverter
 ) : SaveImagePort, LoadImagePort {
 
     private val DIRECTORY_PATH: String = imageConfigProperties.directoryPath

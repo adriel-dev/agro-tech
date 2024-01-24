@@ -5,10 +5,10 @@ import br.com.agrotech.domain.user.port.api.usecase.FindRoleByName
 import br.com.agrotech.domain.user.port.api.usecase.RegisterFirstUser
 import br.com.agrotech.domain.user.port.api.usecase.RegisterUser
 import br.com.agrotech.persistence.farm.entity.FarmEntity
+import br.com.agrotech.persistence.user.converter.UserPersistenceConverter
 import br.com.agrotech.persistence.user.entity.RoleEntity
 import br.com.agrotech.persistence.user.entity.UserEntity
-import br.com.agrotech.shared.farm.FarmConverter
-import br.com.agrotech.shared.user.UserConverter
+import br.com.agrotech.web.farm.converter.FarmWebConverter
 import br.com.agrotech.web.security.dto.LoginRequestDTO
 import br.com.agrotech.web.security.dto.LoginResponseDTO
 import br.com.agrotech.web.user.dto.request.RegisterFirstUserRequestDTO
@@ -26,8 +26,8 @@ class AuthService(
     private val registerUser: RegisterUser,
     private val registerFirstUser: RegisterFirstUser,
     private val findRoleByName: FindRoleByName,
-    private val farmConverter: FarmConverter,
-    private val userConverter: UserConverter
+    private val farmConverter: FarmWebConverter,
+    private val userConverter: UserPersistenceConverter
 ) {
 
     fun login(loginData: LoginRequestDTO): LoginResponseDTO {

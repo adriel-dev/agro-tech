@@ -12,7 +12,6 @@
     <modules>
         <module>agro-tech-persistence</module>
         <module>agro-tech-web</module>
-        <module>agro-tech-shared</module>
     </modules>
 
     <artifactId>agro-tech-infra</artifactId>
@@ -56,11 +55,6 @@
                 <groupId>br.com.agrotech</groupId>
                 <artifactId>agro-tech-web</artifactId>
                 <version>${agrotech.web.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>br.com.agrotech</groupId>
-                <artifactId>agro-tech-shared</artifactId>
-                <version>${agrotech.shared.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

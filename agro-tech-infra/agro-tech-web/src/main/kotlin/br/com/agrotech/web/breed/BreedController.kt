@@ -4,7 +4,7 @@ import br.com.agrotech.domain.breed.port.api.usecase.SaveBreed
 import br.com.agrotech.domain.breed.port.api.usecase.FindBreedById
 import br.com.agrotech.domain.breed.port.api.usecase.UpdateBreed
 import br.com.agrotech.domain.breed.port.api.usecase.DeleteBreedById
-import br.com.agrotech.shared.breed.BreedConverter
+import br.com.agrotech.web.breed.converter.BreedWebConverter
 import br.com.agrotech.web.breed.dto.BreedDTO
 import br.com.agrotech.web.breed.dto.request.SaveBreedRequestDTO
 import br.com.agrotech.web.breed.dto.response.SaveBreedResponseDTO
@@ -21,7 +21,7 @@ class BreedController(
     private val findBreedById: FindBreedById,
     private val updateBreed: UpdateBreed,
     private val deleteBreedById: DeleteBreedById,
-    private val breedConverter: BreedConverter
+    private val breedConverter: BreedWebConverter
 ) {
 
     @PostMapping("/save")

@@ -6,7 +6,7 @@ import br.com.agrotech.domain.animal.port.api.usecase.FindAnimalById
 import br.com.agrotech.domain.animal.port.api.usecase.SaveAnimal
 import br.com.agrotech.domain.animal.port.api.usecase.UpdateAnimal
 import br.com.agrotech.domain.image.model.Image
-import br.com.agrotech.shared.animal.AnimalConverter
+import br.com.agrotech.web.animal.converter.AnimalWebConverter
 import br.com.agrotech.web.animal.dto.AnimalDTO
 import br.com.agrotech.web.animal.dto.request.SaveAnimalRequestDTO
 import br.com.agrotech.web.animal.dto.response.FindAnimalByIdResponseDTO
@@ -23,7 +23,7 @@ class AnimalFacadeImpl(
     private val findAnimalById: FindAnimalById,
     private val updateAnimal: UpdateAnimal,
     private val deleteAnimalById: DeleteAnimalById,
-    private val animalConverter: AnimalConverter
+    private val animalConverter: AnimalWebConverter
 ) : AnimalFacade {
 
     override fun saveAnimal(saveAnimalRequestDTO: SaveAnimalRequestDTO, imageFile: MultipartFile?): SaveAnimalResponseDTO {

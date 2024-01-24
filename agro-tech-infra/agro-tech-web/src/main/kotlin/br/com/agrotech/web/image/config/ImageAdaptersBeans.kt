@@ -2,8 +2,8 @@ package br.com.agrotech.web.image.config
 
 import br.com.agrotech.domain.image.port.spi.LoadImagePort
 import br.com.agrotech.domain.image.port.spi.SaveImagePort
+import br.com.agrotech.persistence.image.converter.ImagePersistenceConverter
 import br.com.agrotech.persistence.image.repository.ImageJpaRepository
-import br.com.agrotech.shared.image.ImageConverter
 import br.com.agrotech.web.image.impl.ImageFileSystemAdapter
 import br.com.agrotech.web.infra.ImageFileConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -13,12 +13,12 @@ import org.springframework.context.annotation.Configuration
 open class ImageAdaptersBeans {
 
     @Bean
-    open fun saveImagePort(imageFileConfigurationProperties: ImageFileConfigurationProperties, imageJpaRepository: ImageJpaRepository, imageConverter: ImageConverter): SaveImagePort {
+    open fun saveImagePort(imageFileConfigurationProperties: ImageFileConfigurationProperties, imageJpaRepository: ImageJpaRepository, imageConverter: ImagePersistenceConverter): SaveImagePort {
         return ImageFileSystemAdapter(imageFileConfigurationProperties, imageJpaRepository, imageConverter)
     }
 
     @Bean
-    open fun loadImagePort(imageFileConfigurationProperties: ImageFileConfigurationProperties, imageJpaRepository: ImageJpaRepository, imageConverter: ImageConverter): LoadImagePort {
+    open fun loadImagePort(imageFileConfigurationProperties: ImageFileConfigurationProperties, imageJpaRepository: ImageJpaRepository, imageConverter: ImagePersistenceConverter): LoadImagePort {
         return ImageFileSystemAdapter(imageFileConfigurationProperties, imageJpaRepository, imageConverter)
     }
 
