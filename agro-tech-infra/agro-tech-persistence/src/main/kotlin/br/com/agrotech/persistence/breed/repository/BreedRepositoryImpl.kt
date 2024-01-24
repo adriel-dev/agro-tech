@@ -3,14 +3,14 @@ package br.com.agrotech.persistence.breed.repository
 import br.com.agrotech.persistence.breed.exception.BreedNotFoundException
 import br.com.agrotech.domain.breed.model.Breed
 import br.com.agrotech.domain.breed.port.spi.persistence.BreedRepository
-import br.com.agrotech.shared.breed.BreedConverter
+import br.com.agrotech.persistence.breed.converter.BreedPersistenceConverter
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
 open class BreedRepositoryImpl(
     private val breedJpaRepository: BreedJpaRepository,
-    private val breedConverter: BreedConverter
+    private val breedConverter: BreedPersistenceConverter
 ) : BreedRepository {
 
     override fun saveBreed(breed: Breed): Breed {

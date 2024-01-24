@@ -6,8 +6,7 @@ import br.com.agrotech.domain.image.port.spi.LoadImagePort
 import br.com.agrotech.domain.qrcode.port.spi.LoadQrCodePort
 import br.com.agrotech.persistence.image.exception.ImageNotFoundException
 import br.com.agrotech.persistence.qrcode.exception.QrCodeNotFoundException
-import br.com.agrotech.shared.image.ImageConverter
-import br.com.agrotech.shared.qrcode.QrCodeConverter
+import br.com.agrotech.web.qrcode.converter.QrCodeWebConverter
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
@@ -15,8 +14,7 @@ open class FindAnimalByIdUseCase(
     private val animalRepository: AnimalRepository,
     private val loadImagePort: LoadImagePort,
     private val loadQrCodePort: LoadQrCodePort,
-    private val imageConverter: ImageConverter,
-    private val qrCodeConverter: QrCodeConverter
+    private val qrCodeConverter: QrCodeWebConverter
 ) : FindAnimalById {
 
     @Transactional

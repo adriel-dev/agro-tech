@@ -3,14 +3,14 @@ package br.com.agrotech.persistence.employee.repository
 import br.com.agrotech.persistence.employee.exception.EmployeeNotFoundException
 import br.com.agrotech.domain.employee.model.Employee
 import br.com.agrotech.domain.employee.port.spi.persistence.EmployeeRepository
-import br.com.agrotech.shared.employee.EmployeeConverter
+import br.com.agrotech.persistence.employee.converter.EmployeePersistenceConverter
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
 open class EmployeeRepositoryImpl(
     private val employeeJpaRepository: EmployeeJpaRepository,
-    private val employeeConverter: EmployeeConverter
+    private val employeeConverter: EmployeePersistenceConverter
 ) : EmployeeRepository {
 
     override fun saveEmployee(employee: Employee): Employee {

@@ -3,14 +3,14 @@ package br.com.agrotech.persistence.farm.repository
 import br.com.agrotech.persistence.farm.exception.FarmNotFoundException
 import br.com.agrotech.domain.farm.model.Farm
 import br.com.agrotech.domain.farm.port.spi.persistence.FarmRepository
-import br.com.agrotech.shared.farm.FarmConverter
+import br.com.agrotech.persistence.farm.converter.FarmPersistenceConverter
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
 open class FarmRepositoryImpl(
     private val farmJpaRepository: FarmJpaRepository,
-    private val farmConverter: FarmConverter
+    private val farmConverter: FarmPersistenceConverter
 ) : FarmRepository {
 
     override fun saveFarm(farm: Farm): Farm {

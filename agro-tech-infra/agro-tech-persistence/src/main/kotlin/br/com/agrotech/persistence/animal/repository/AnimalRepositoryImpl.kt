@@ -3,14 +3,14 @@ package br.com.agrotech.persistence.animal.repository
 import br.com.agrotech.persistence.animal.exception.AnimalNotFoundException
 import br.com.agrotech.domain.animal.model.Animal
 import br.com.agrotech.domain.animal.port.spi.persistence.AnimalRepository
+import br.com.agrotech.persistence.animal.converter.AnimalPersistenceConverter
+import br.com.agrotech.persistence.breed.converter.BreedPersistenceConverter
 import br.com.agrotech.persistence.breed.exception.BreedNotFoundException
 import br.com.agrotech.persistence.breed.repository.BreedJpaRepository
+import br.com.agrotech.persistence.farm.converter.FarmPersistenceConverter
 import br.com.agrotech.persistence.farm.exception.FarmNotFoundException
 import br.com.agrotech.persistence.farm.repository.FarmJpaRepository
 import br.com.agrotech.persistence.image.repository.ImageJpaRepository
-import br.com.agrotech.shared.animal.AnimalConverter
-import br.com.agrotech.shared.breed.BreedConverter
-import br.com.agrotech.shared.farm.FarmConverter
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -18,11 +18,11 @@ import java.util.UUID
 @Repository
 open class AnimalRepositoryImpl(
     private val animalJpaRepository: AnimalJpaRepository,
-    private val animalConverter: AnimalConverter,
+    private val animalConverter: AnimalPersistenceConverter,
     private val breedJpaRepository: BreedJpaRepository,
-    private val breedConverter: BreedConverter,
+    private val breedConverter: BreedPersistenceConverter,
     private val farmJpaRepository: FarmJpaRepository,
-    private val farmConverter: FarmConverter,
+    private val farmConverter: FarmPersistenceConverter,
     private val imageJpaRepository: ImageJpaRepository
 ) : AnimalRepository {
 

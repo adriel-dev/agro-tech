@@ -3,14 +3,14 @@ package br.com.agrotech.persistence.species.repository
 import br.com.agrotech.persistence.species.exception.SpeciesNotFoundException
 import br.com.agrotech.domain.species.model.Species
 import br.com.agrotech.domain.species.port.spi.persistence.SpeciesRepository
-import br.com.agrotech.shared.species.SpeciesConverter
+import br.com.agrotech.persistence.species.converter.SpeciesPersistenceConverter
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
 open class SpeciesRepositoryImpl(
     private val speciesJpaRepository: SpeciesJpaRepository,
-    private val speciesConverter: SpeciesConverter
+    private val speciesConverter: SpeciesPersistenceConverter
 ) : SpeciesRepository {
 
     override fun saveSpecies(species: Species): Species {

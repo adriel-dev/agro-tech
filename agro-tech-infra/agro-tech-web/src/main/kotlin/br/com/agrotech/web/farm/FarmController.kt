@@ -4,7 +4,7 @@ import br.com.agrotech.domain.farm.port.api.usecase.SaveFarm
 import br.com.agrotech.domain.farm.port.api.usecase.FindFarmById
 import br.com.agrotech.domain.farm.port.api.usecase.UpdateFarm
 import br.com.agrotech.domain.farm.port.api.usecase.DeleteFarmById
-import br.com.agrotech.shared.farm.FarmConverter
+import br.com.agrotech.web.farm.converter.FarmWebConverter
 import br.com.agrotech.web.farm.dto.FarmDTO
 import br.com.agrotech.web.farm.dto.request.SaveFarmRequestDTO
 import br.com.agrotech.web.farm.dto.response.SaveFarmResponseDTO
@@ -21,7 +21,7 @@ class FarmController(
     private val findFarmById: FindFarmById,
     private val updateFarm: UpdateFarm,
     private val deleteFarmById: DeleteFarmById,
-    private val farmConverter: FarmConverter
+    private val farmConverter: FarmWebConverter
 ) {
 
     @PostMapping("/save")
