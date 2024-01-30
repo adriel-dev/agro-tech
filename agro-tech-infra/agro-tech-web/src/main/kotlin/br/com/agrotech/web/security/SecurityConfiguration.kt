@@ -37,11 +37,12 @@ open class SecurityConfiguration(
                 authorize
                     .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/v1/auth/register/**").hasRole("ADMIN")
-                    .requestMatchers("/api/v1/species/**").hasRole("ADMIN")
-                    .requestMatchers("/api/v1/breed/**").hasRole("ADMIN")
-                    .requestMatchers("/api/v1/farm/**").hasRole("ADMIN")
-                    .requestMatchers("/api/v1/employee/**").hasRole("OWNER")
+                    .requestMatchers("/api/v1/species/save").hasRole("ADMIN")
+                    .requestMatchers("/api/v1/breed/save").hasRole("ADMIN")
+                    .requestMatchers("/api/v1/farm/save").hasRole("ADMIN")
+                    .requestMatchers("/api/v1/employee/save").hasRole("OWNER")
                     .requestMatchers("/error").permitAll()
+                    .requestMatchers(HttpMethod.OPTIONS).permitAll()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
@@ -69,7 +70,7 @@ open class SecurityConfiguration(
     open fun corsFilter(): CorsFilter {
         val source = UrlBasedCorsConfigurationSource()
         val config = CorsConfiguration()
-        config.addAllowedOrigin("*")
+        config.addAllowedOrigin("http://localhost:4200")
         config.addAllowedHeader("*")
         config.addAllowedMethod("*")
         source.registerCorsConfiguration("/**", config)

@@ -1,11 +1,10 @@
 package br.com.agrotech.web.animal.facade
 
 import br.com.agrotech.domain.animal.model.Animal
-import br.com.agrotech.domain.animal.port.api.usecase.DeleteAnimalById
-import br.com.agrotech.domain.animal.port.api.usecase.FindAnimalById
-import br.com.agrotech.domain.animal.port.api.usecase.SaveAnimal
-import br.com.agrotech.domain.animal.port.api.usecase.UpdateAnimal
+import br.com.agrotech.domain.animal.port.api.usecase.*
 import br.com.agrotech.domain.image.model.Image
+import br.com.agrotech.domain.pagination.DomainPage
+import br.com.agrotech.persistence.user.entity.UserEntity
 import br.com.agrotech.web.animal.converter.AnimalWebConverter
 import br.com.agrotech.web.animal.dto.AnimalDTO
 import br.com.agrotech.web.animal.dto.request.SaveAnimalRequestDTO
@@ -15,6 +14,7 @@ import br.com.agrotech.web.image.exception.InvalidImageException
 import br.com.agrotech.web.qrcode.dto.QrCodeDTO
 import org.springframework.security.access.prepost.PostAuthorize
 import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
@@ -25,6 +25,7 @@ open class AnimalFacadeImpl(
     private val findAnimalById: FindAnimalById,
     private val updateAnimal: UpdateAnimal,
     private val deleteAnimalById: DeleteAnimalById,
+    private val findAllAnimals: FindAllAnimals,
     private val animalConverter: AnimalWebConverter
 ) : AnimalFacade {
 
@@ -51,6 +52,14 @@ open class AnimalFacadeImpl(
         responseDto.image = foundData["imageData"] as ByteArray?
         responseDto.qrCode = foundData["qrCode"] as QrCodeDTO?
         return responseDto
+    }
+
+    override fun findAllAnimals(authentication: Authentication, page: Int, size: Int): DomainPage<AnimalDTO> {
+        val user = authentication.principal as UserEntity
+        val farmId = user.farm?.id!!
+        val domainPageAnimals = findAllAnimals.find(farmId, page, size)
+        val responseDomainPageAnimals = domainPageAnimals.content.map { animalConverter.animalToAnimalDto(it) }
+        return DomainPage(responseDomainPageAnimals, domainPageAnimals.totalPages, domainPageAnimals.totalElements, domainPageAnimals.pageSize, domainPageAnimals.pageNumber)
     }
 
     @PreAuthorize("@animalPermissionEvaluator.hasPermissionToUpdateOrDelete(authentication, #animalId)")
