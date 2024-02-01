@@ -1,10 +1,8 @@
 package br.com.agrotech.web.animal.config
 
-import br.com.agrotech.domain.animal.port.api.usecase.DeleteAnimalById
-import br.com.agrotech.domain.animal.port.api.usecase.FindAnimalById
-import br.com.agrotech.domain.animal.port.api.usecase.SaveAnimal
-import br.com.agrotech.domain.animal.port.api.usecase.UpdateAnimal
+import br.com.agrotech.domain.animal.port.api.usecase.*
 import br.com.agrotech.domain.animal.port.api.usecase.impl.DeleteAnimalByIdUseCase
+import br.com.agrotech.domain.animal.port.api.usecase.impl.FindAllAnimalsUseCase
 import br.com.agrotech.domain.animal.port.api.usecase.impl.UpdateAnimalUseCase
 import br.com.agrotech.domain.animal.port.spi.persistence.AnimalRepository
 import br.com.agrotech.domain.image.port.api.usecase.SaveImage
@@ -35,6 +33,9 @@ open class AnimalUseCasesBeans {
             qrCodeConverter = qrCodeConverter
         )
     }
+
+    @Bean
+    open fun findAllAnimals(animalRepository: AnimalRepository): FindAllAnimals = FindAllAnimalsUseCase(animalRepository)
 
     @Bean
     open fun updateAnimal(animalRepository: AnimalRepository): UpdateAnimal {

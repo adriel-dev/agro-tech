@@ -3,7 +3,9 @@ package br.com.agrotech.persistence.animal.repository
 import br.com.agrotech.persistence.animal.exception.AnimalNotFoundException
 import br.com.agrotech.domain.animal.model.Animal
 import br.com.agrotech.domain.animal.port.spi.persistence.AnimalRepository
+import br.com.agrotech.domain.pagination.DomainPage
 import br.com.agrotech.persistence.animal.converter.AnimalPersistenceConverter
+import br.com.agrotech.persistence.animal.entity.AnimalEntity
 import br.com.agrotech.persistence.breed.converter.BreedPersistenceConverter
 import br.com.agrotech.persistence.breed.exception.BreedNotFoundException
 import br.com.agrotech.persistence.breed.repository.BreedJpaRepository
@@ -11,6 +13,9 @@ import br.com.agrotech.persistence.farm.converter.FarmPersistenceConverter
 import br.com.agrotech.persistence.farm.exception.FarmNotFoundException
 import br.com.agrotech.persistence.farm.repository.FarmJpaRepository
 import br.com.agrotech.persistence.image.repository.ImageJpaRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -50,8 +55,11 @@ open class AnimalRepositoryImpl(
         return animalConverter.animalEntityToAnimal(foundAnimal)
     }
 
-    override fun findAllAnimals(): List<Animal> {
-        return animalJpaRepository.findAll().map { animalConverter.animalEntityToAnimal(it) }
+    override fun findAllAnimals(farmId: UUID, page: Int, size: Int): DomainPage<Animal> {
+        val pageable: Pageable = PageRequest.of(page, size)
+        val animalsPage: Page<AnimalEntity> = animalJpaRepository.findAllByFarmId(farmId, pageable)
+        val animalList = animalsPage.map { animalConverter.animalEntityToAnimal(it) }.toList()
+        return DomainPage(animalList, animalsPage.totalPages, animalsPage.totalElements, animalsPage.size, animalsPage.number)
     }
 
     @Transactional

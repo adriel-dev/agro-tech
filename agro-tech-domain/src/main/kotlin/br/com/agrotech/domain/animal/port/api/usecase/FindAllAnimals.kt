@@ -1,7 +1,9 @@
 package br.com.agrotech.domain.animal.port.api.usecase
 
 import br.com.agrotech.domain.animal.model.Animal
+import br.com.agrotech.domain.pagination.DomainPage
+import java.util.*
 
 interface FindAllAnimals {
-    fun findAllAnimals(): List<Animal>
+    fun find(farmId: UUID, page: Int, size: Int): DomainPage<Animal>
 }
