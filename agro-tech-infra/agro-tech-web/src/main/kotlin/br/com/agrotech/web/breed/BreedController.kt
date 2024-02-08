@@ -1,9 +1,6 @@
 package br.com.agrotech.web.breed
 
-import br.com.agrotech.domain.breed.port.api.usecase.SaveBreed
-import br.com.agrotech.domain.breed.port.api.usecase.FindBreedById
-import br.com.agrotech.domain.breed.port.api.usecase.UpdateBreed
-import br.com.agrotech.domain.breed.port.api.usecase.DeleteBreedById
+import br.com.agrotech.domain.breed.port.api.usecase.*
 import br.com.agrotech.web.breed.converter.BreedWebConverter
 import br.com.agrotech.web.breed.dto.BreedDTO
 import br.com.agrotech.web.breed.dto.request.SaveBreedRequestDTO
@@ -19,6 +16,7 @@ import java.util.*
 class BreedController(
     private val saveBreed: SaveBreed,
     private val findBreedById: FindBreedById,
+    private val findAllBreeds: FindAllBreeds,
     private val updateBreed: UpdateBreed,
     private val deleteBreedById: DeleteBreedById,
     private val breedConverter: BreedWebConverter
@@ -29,6 +27,12 @@ class BreedController(
         val breed = breedConverter.saveBreedRequestDtoToBreed(saveBreedRequestDTO)
         val createdBreed = saveBreed.save(breed)
         return created(URI.create("/api/v1/breed/find/${createdBreed.id.toString()}")).body(breedConverter.breedToSaveBreedResponseDto(createdBreed))
+    }
+
+    @GetMapping("/find/all")
+    fun findAllBreeds(): ResponseEntity<List<BreedDTO>> {
+        val foundBreeds = findAllBreeds.find().map { breedConverter.breedToBreedDto(it) }
+        return ok().body(foundBreeds)
     }
 
     @GetMapping("/find/{breedId}")
