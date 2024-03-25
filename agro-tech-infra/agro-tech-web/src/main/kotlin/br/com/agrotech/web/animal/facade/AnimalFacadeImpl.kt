@@ -8,8 +8,10 @@ import br.com.agrotech.persistence.user.entity.UserEntity
 import br.com.agrotech.web.animal.converter.AnimalWebConverter
 import br.com.agrotech.web.animal.dto.AnimalDTO
 import br.com.agrotech.web.animal.dto.request.SaveAnimalRequestDTO
+import br.com.agrotech.web.animal.dto.response.FindAllAnimalsResponseDTO
 import br.com.agrotech.web.animal.dto.response.FindAnimalByIdResponseDTO
 import br.com.agrotech.web.animal.dto.response.SaveAnimalResponseDTO
+import br.com.agrotech.web.image.util.ImageUtils
 import br.com.agrotech.web.image.exception.InvalidImageException
 import br.com.agrotech.web.qrcode.dto.QrCodeDTO
 import org.springframework.security.access.prepost.PostAuthorize
@@ -26,7 +28,8 @@ open class AnimalFacadeImpl(
     private val updateAnimal: UpdateAnimal,
     private val deleteAnimalById: DeleteAnimalById,
     private val findAllAnimals: FindAllAnimals,
-    private val animalConverter: AnimalWebConverter
+    private val animalConverter: AnimalWebConverter,
+    private val imageUtils: ImageUtils
 ) : AnimalFacade {
 
     @PreAuthorize("@animalPermissionEvaluator.hasPermissionToSave(authentication, #saveAnimalRequestDTO)")
@@ -35,8 +38,8 @@ open class AnimalFacadeImpl(
         var image: Image? = null
         var imageData: ByteArray? = null
         if(imageFile != null) {
-            if(isImageFileValid(imageFile)) {
-                image = Image(type = imageFile.contentType, fileExtension = getFileExtension(imageFile))
+            if(imageUtils.isImageFileValid(imageFile)) {
+                image = Image(type = imageFile.contentType, fileExtension = imageUtils.getFileExtension(imageFile))
                 imageData = imageFile.bytes
             } else {
                 throw InvalidImageException()
@@ -54,33 +57,31 @@ open class AnimalFacadeImpl(
         return responseDto
     }
 
-    override fun findAllAnimals(authentication: Authentication, page: Int, size: Int): DomainPage<AnimalDTO> {
+    override fun findAllAnimals(authentication: Authentication, page: Int, size: Int): DomainPage<FindAllAnimalsResponseDTO> {
         val user = authentication.principal as UserEntity
         val farmId = user.farm?.id!!
         val domainPageAnimals = findAllAnimals.find(farmId, page, size)
-        val responseDomainPageAnimals = domainPageAnimals.content.map { animalConverter.animalToAnimalDto(it) }
+        val responseDomainPageAnimals = domainPageAnimals.content.map { animalConverter.animalToFindAllAnimalsResponseDTO(it, "") }
         return DomainPage(responseDomainPageAnimals, domainPageAnimals.totalPages, domainPageAnimals.totalElements, domainPageAnimals.pageSize, domainPageAnimals.pageNumber)
     }
 
     @PreAuthorize("@animalPermissionEvaluator.hasPermissionToUpdateOrDelete(authentication, #animalId)")
-    override fun updateAnimal(animalId: UUID, animalDto: AnimalDTO): AnimalDTO {
+    override fun updateAnimal(animalId: UUID, animalDto: AnimalDTO, imageFile: MultipartFile?): AnimalDTO {
+        var imageBytes: ByteArray? = null
+        var image: Image? = null
+        imageFile?.let {
+            if(imageUtils.isImageFileValid(it)){
+                imageBytes = it.bytes
+                image = Image(animal = Animal(id = animalId), type = it.contentType, fileExtension = imageUtils.getFileExtension(it))
+            }
+        }
         val animal = animalConverter.animalDtoToAnimal(animalDto)
-        return animalConverter.animalToAnimalDto(updateAnimal.update(animalId = animalId, animal = animal))
+        return animalConverter.animalToAnimalDto(updateAnimal.update(animalId = animalId, animal = animal, imageBytes = imageBytes, image))
     }
 
     @PreAuthorize("@animalPermissionEvaluator.hasPermissionToUpdateOrDelete(authentication, #animalId)")
     override fun deleteAnimalById(animalId: UUID) {
         deleteAnimalById.delete(animalId = animalId)
-    }
-
-    private fun isImageFileValid(file: MultipartFile): Boolean {
-        val allowedExtensions = listOf("jpg", "jpeg", "png")
-        val fileExtension = getFileExtension(file)
-        return file.contentType?.startsWith("image/") == true && allowedExtensions.contains(fileExtension?.lowercase())
-    }
-
-    private fun getFileExtension(file: MultipartFile): String? {
-        return file.originalFilename?.substringAfterLast('.')
     }
 
 }

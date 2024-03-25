@@ -1,9 +1,6 @@
 package br.com.agrotech.web.monitoring.facade
 
-import br.com.agrotech.domain.monitoring.port.api.usecase.DeleteMonitoringById
-import br.com.agrotech.domain.monitoring.port.api.usecase.FindMonitoringById
-import br.com.agrotech.domain.monitoring.port.api.usecase.SaveMonitoring
-import br.com.agrotech.domain.monitoring.port.api.usecase.UpdateMonitoring
+import br.com.agrotech.domain.monitoring.port.api.usecase.*
 import br.com.agrotech.web.monitoring.converter.MonitoringWebConverter
 import br.com.agrotech.web.monitoring.dto.MonitoringDTO
 import br.com.agrotech.web.monitoring.dto.request.SaveMonitoringRequestDTO
@@ -17,6 +14,7 @@ import java.util.*
 open class MonitoringFacadeImpl(
     private val saveMonitoring: SaveMonitoring,
     private val findMonitoringById: FindMonitoringById,
+    private val findMonitoringsByAnimalId: FindMonitoringsByAnimalId,
     private val updateMonitoring: UpdateMonitoring,
     private val deleteMonitoringById: DeleteMonitoringById,
     private val monitoringConverter: MonitoringWebConverter
@@ -33,6 +31,10 @@ open class MonitoringFacadeImpl(
     override fun findMonitoringById(monitoringId: UUID): MonitoringDTO {
         val foundMonitoring = findMonitoringById.find(monitoringId)
         return monitoringConverter.monitoringToMonitoringDto(foundMonitoring)
+    }
+
+    override fun findMonitoringsByAnimalId(animalId: UUID): List<MonitoringDTO> {
+        return findMonitoringsByAnimalId.find(animalId).map { monitoringConverter.monitoringToMonitoringDto(it) }
     }
 
     @PreAuthorize("@monitoringPermissionEvaluator.hasPermissionToUpdateOrDelete(authentication, #monitoringId)")

@@ -36,9 +36,9 @@ open class SecurityConfiguration(
             .authorizeHttpRequests { authorize ->
                 authorize
                     .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/v1/auth/register/**").hasRole("ADMIN")
-                    .requestMatchers("/api/v1/species/save").hasRole("ADMIN")
-                    .requestMatchers("/api/v1/breed/save").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/api/v1/auth/register/**").permitAll()
+                    .requestMatchers("/api/v1/species/save").authenticated()
+                    .requestMatchers("/api/v1/breed/save").authenticated()
                     .requestMatchers("/api/v1/farm/save").hasRole("ADMIN")
                     .requestMatchers("/api/v1/employee/save").hasRole("OWNER")
                     .requestMatchers("/error").permitAll()

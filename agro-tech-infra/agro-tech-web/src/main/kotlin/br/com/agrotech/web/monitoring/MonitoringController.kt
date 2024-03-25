@@ -28,6 +28,11 @@ class MonitoringController(
         return ok().body(foundMonitoring)
     }
 
+    @GetMapping("/find/animal/{animalId}")
+    fun findMonitoringsByAnimalId(@PathVariable animalId: String): ResponseEntity<List<MonitoringDTO>> {
+        return ok().body(monitoringFacade.findMonitoringsByAnimalId(UUID.fromString(animalId)))
+    }
+
     @PutMapping("/update/{monitoringId}")
     fun updateMonitoring(@PathVariable monitoringId: String, @RequestBody monitoringDTO: MonitoringDTO): ResponseEntity<MonitoringDTO> {
         val updatedMonitoring = monitoringFacade.updateMonitoring(UUID.fromString(monitoringId), monitoringDTO)
