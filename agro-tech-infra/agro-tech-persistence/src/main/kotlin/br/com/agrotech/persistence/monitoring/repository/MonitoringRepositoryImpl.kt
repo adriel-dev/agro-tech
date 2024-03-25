@@ -35,6 +35,10 @@ open class MonitoringRepositoryImpl(
         return monitoringJpaRepository.findAll().map { monitoringConverter.monitoringEntityToMonitoring(it) }
     }
 
+    override fun findMonitoringsByAnimalId(animalId: UUID): List<Monitoring> {
+        return monitoringJpaRepository.findMonitoringByAnimalIdOrderByMonitoringDateDesc(animalId).map { monitoringConverter.monitoringEntityToMonitoring(it) }
+    }
+
     override fun deleteMonitoringById(monitoringId: UUID) {
         return monitoringJpaRepository.deleteById(monitoringId)
     }

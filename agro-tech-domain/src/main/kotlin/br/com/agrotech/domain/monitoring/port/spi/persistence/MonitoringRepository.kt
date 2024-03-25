@@ -8,5 +8,6 @@ interface MonitoringRepository {
     fun updateMonitoring(monitoringId: UUID, monitoring: Monitoring): Monitoring
     fun findMonitoringById(monitoringId: UUID): Monitoring
     fun findAllMonitorings(): List<Monitoring>
+    fun findMonitoringsByAnimalId(animalId: UUID): List<Monitoring>
     fun deleteMonitoringById(monitoringId: UUID)
 }

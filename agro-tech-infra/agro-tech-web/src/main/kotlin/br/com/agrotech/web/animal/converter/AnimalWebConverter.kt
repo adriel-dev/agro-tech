@@ -7,10 +7,7 @@ import br.com.agrotech.domain.farm.model.Farm
 import br.com.agrotech.web.animal.dto.AnimalDTO
 import br.com.agrotech.web.animal.dto.SexEnumDTO
 import br.com.agrotech.web.animal.dto.request.SaveAnimalRequestDTO
-import br.com.agrotech.web.animal.dto.response.BreedIdResponseDTO
-import br.com.agrotech.web.animal.dto.response.FarmIdResponseDTO
-import br.com.agrotech.web.animal.dto.response.FindAnimalByIdResponseDTO
-import br.com.agrotech.web.animal.dto.response.SaveAnimalResponseDTO
+import br.com.agrotech.web.animal.dto.response.*
 import br.com.agrotech.web.breed.converter.BreedWebConverter
 import br.com.agrotech.web.farm.converter.FarmWebConverter
 import org.springframework.stereotype.Component
@@ -25,6 +22,7 @@ class AnimalWebConverter(
     fun animalDtoToAnimal(animalDTO: AnimalDTO): Animal {
         return Animal(
             id = animalDTO.id,
+            externalId = animalDTO.externalId,
             name = animalDTO.name,
             sex = animalDTO.sex?.let { SexEnum.valueOf(it.toString()) },
             acquisitionDate = animalDTO.acquisitionDate,
@@ -39,6 +37,7 @@ class AnimalWebConverter(
     fun animalToAnimalDto(animal: Animal): AnimalDTO {
         return AnimalDTO(
             id = animal.id,
+            externalId = animal.externalId,
             name = animal.name,
             sex = animal.sex?.let { SexEnumDTO.valueOf(it.toString()) },
             acquisitionDate = animal.acquisitionDate,
@@ -66,6 +65,7 @@ class AnimalWebConverter(
     fun animalToSaveAnimalResponseDto(animal: Animal): SaveAnimalResponseDTO {
         return SaveAnimalResponseDTO(
             id = animal.id,
+            externalId = animal.externalId,
             name = animal.name,
             sex = animal.sex?.let { SexEnumDTO.valueOf(it.toString()) },
             acquisitionDate = animal.acquisitionDate,
@@ -80,6 +80,7 @@ class AnimalWebConverter(
     fun animalToFindAnimalByIdResponseDto(animal: Animal): FindAnimalByIdResponseDTO {
         return FindAnimalByIdResponseDTO(
             id = animal.id,
+            externalId = animal.externalId,
             name = animal.name,
             sex = animal.sex?.let { SexEnumDTO.valueOf(it.toString()) },
             acquisitionDate = animal.acquisitionDate,
@@ -88,6 +89,22 @@ class AnimalWebConverter(
             saleValue = animal.saleValue,
             breed = animal.breed?.let { breedConverter.breedToBreedDto(it) },
             farm = animal.farm?.let { farmConverter.farmToFarmDto(it) }
+        )
+    }
+
+    fun animalToFindAllAnimalsResponseDTO(animal: Animal, imagePath: String): FindAllAnimalsResponseDTO {
+        return FindAllAnimalsResponseDTO(
+            id = animal.id,
+            externalId = animal.externalId,
+            name = animal.name,
+            sex = animal.sex?.let { SexEnumDTO.valueOf(it.toString()) },
+            acquisitionDate = animal.acquisitionDate,
+            saleDate = animal.saleDate,
+            acquisitionValue = animal.acquisitionValue,
+            saleValue = animal.saleValue,
+            breed = animal.breed?.let { breedConverter.breedToBreedDto(it) },
+            farm = animal.farm?.let { farmConverter.farmToFarmDto(it) },
+            imagePath = imagePath
         )
     }
 

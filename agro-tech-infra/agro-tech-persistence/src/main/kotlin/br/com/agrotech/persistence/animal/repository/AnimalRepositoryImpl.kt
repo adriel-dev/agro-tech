@@ -57,7 +57,7 @@ open class AnimalRepositoryImpl(
 
     override fun findAllAnimals(farmId: UUID, page: Int, size: Int): DomainPage<Animal> {
         val pageable: Pageable = PageRequest.of(page, size)
-        val animalsPage: Page<AnimalEntity> = animalJpaRepository.findAllByFarmId(farmId, pageable)
+        val animalsPage: Page<AnimalEntity> = animalJpaRepository.findAllByFarmIdOrderByCreatedDateDesc(farmId, pageable)
         val animalList = animalsPage.map { animalConverter.animalEntityToAnimal(it) }.toList()
         return DomainPage(animalList, animalsPage.totalPages, animalsPage.totalElements, animalsPage.size, animalsPage.number)
     }
@@ -65,7 +65,7 @@ open class AnimalRepositoryImpl(
     @Transactional
     override fun deleteAnimalById(animalId: UUID) {
         imageJpaRepository.deleteByAnimalId(animalId)
-        return animalJpaRepository.deleteById(animalId)
+        animalJpaRepository.deleteById(animalId)
     }
 
 }

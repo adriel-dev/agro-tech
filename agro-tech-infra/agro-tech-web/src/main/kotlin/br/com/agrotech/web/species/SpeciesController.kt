@@ -1,9 +1,6 @@
 package br.com.agrotech.web.species
 
-import br.com.agrotech.domain.species.port.api.usecase.SaveSpecies
-import br.com.agrotech.domain.species.port.api.usecase.FindSpeciesById
-import br.com.agrotech.domain.species.port.api.usecase.UpdateSpecies
-import br.com.agrotech.domain.species.port.api.usecase.DeleteSpeciesById
+import br.com.agrotech.domain.species.port.api.usecase.*
 import br.com.agrotech.web.species.converter.SpeciesWebConverter
 import br.com.agrotech.web.species.dto.SpeciesDTO
 import br.com.agrotech.web.species.dto.request.SaveSpeciesRequestDTO
@@ -18,6 +15,7 @@ import java.util.*
 class SpeciesController(
     private val saveSpecies: SaveSpecies,
     private val findSpeciesById: FindSpeciesById,
+    private val findAllSpecies: FindAllSpecies,
     private val updateSpecies: UpdateSpecies,
     private val deleteSpeciesById: DeleteSpeciesById,
     private val speciesConverter: SpeciesWebConverter
@@ -28,6 +26,12 @@ class SpeciesController(
         val species = speciesConverter.saveSpeciesRequestDtoToSpecies(saveSpeciesRequestDTO)
         val createdSpecies = saveSpecies.save(species)
         return created(URI.create("/api/v1/species/find/${createdSpecies.id.toString()}")).body(speciesConverter.speciesToSpeciesDto(createdSpecies))
+    }
+
+    @GetMapping("/find/all")
+    fun findAllSpecies(): ResponseEntity<List<SpeciesDTO>> {
+        val foundSpecies = findAllSpecies.findAllSpecies().map { speciesConverter.speciesToSpeciesDto(it) }
+        return ok().body(foundSpecies)
     }
 
     @GetMapping("/find/{speciesId}")

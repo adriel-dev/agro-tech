@@ -6,6 +6,7 @@ import java.util.*
 
 data class SaveAnimalResponseDTO(
     val id: UUID? = null,
+    var externalId: String? = null,
     val name: String? = null,
     val sex: SexEnumDTO? = null,
     val acquisitionDate: LocalDate? = null,

@@ -7,4 +7,5 @@ import java.util.UUID
 
 @Repository
 interface MonitoringJpaRepository : JpaRepository<MonitoringEntity, UUID> {
+    fun findMonitoringByAnimalIdOrderByMonitoringDateDesc(animalId: UUID): List<MonitoringEntity>
 }

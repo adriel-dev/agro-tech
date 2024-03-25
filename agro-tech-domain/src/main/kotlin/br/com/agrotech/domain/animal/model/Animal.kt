@@ -7,6 +7,7 @@ import java.util.*
 
 data class Animal(
     var id: UUID? = null,
+    var externalId: String? = null,
     var name: String? = null,
     var sex: SexEnum? = null,
     var acquisitionDate: LocalDate? = null,

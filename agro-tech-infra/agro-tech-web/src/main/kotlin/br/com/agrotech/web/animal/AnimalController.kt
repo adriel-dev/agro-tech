@@ -3,11 +3,13 @@ package br.com.agrotech.web.animal
 import br.com.agrotech.domain.pagination.DomainPage
 import br.com.agrotech.web.animal.dto.AnimalDTO
 import br.com.agrotech.web.animal.dto.request.SaveAnimalRequestDTO
+import br.com.agrotech.web.animal.dto.response.FindAllAnimalsResponseDTO
 import br.com.agrotech.web.animal.dto.response.FindAnimalByIdResponseDTO
 import br.com.agrotech.web.animal.dto.response.SaveAnimalResponseDTO
 import br.com.agrotech.web.animal.facade.AnimalFacade
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Positive
+import jakarta.validation.constraints.PositiveOrZero
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
 import org.springframework.security.core.Authentication
@@ -23,7 +25,7 @@ class AnimalController(
 ) {
 
     @PostMapping("/save")
-    fun saveAnimal(@RequestPart("data") saveAnimalRequestDTO: SaveAnimalRequestDTO, @RequestPart(value = "image", required = false) imageFile: MultipartFile?): ResponseEntity<SaveAnimalResponseDTO> {
+    fun saveAnimal(@RequestPart("data") saveAnimalRequestDTO: SaveAnimalRequestDTO, @RequestPart("image", required = false) imageFile: MultipartFile?): ResponseEntity<SaveAnimalResponseDTO> {
         val createdAnimal = animalFacade.saveAnimal(saveAnimalRequestDTO = saveAnimalRequestDTO, imageFile = imageFile)
         return created(URI.create("/api/v1/animal/find/${createdAnimal.id.toString()}")).body(createdAnimal)
     }
@@ -36,16 +38,16 @@ class AnimalController(
 
     @GetMapping("/find/all")
     fun findAll(
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "10") size: Int,
+        @RequestParam(defaultValue = "0") @PositiveOrZero page: Int,
+        @RequestParam(defaultValue = "10") @Positive @Max(100) size: Int,
         authentication: Authentication)
-    : ResponseEntity<DomainPage<AnimalDTO>> {
+    : ResponseEntity<DomainPage<FindAllAnimalsResponseDTO>> {
         return ok().body(animalFacade.findAllAnimals(authentication, page, size))
     }
 
     @PutMapping("/update/{animalId}")
-    fun updateAnimal(@PathVariable animalId: String, @RequestBody animalDTO: AnimalDTO) : ResponseEntity<AnimalDTO> {
-        val updatedAnimal = animalFacade.updateAnimal(UUID.fromString(animalId), animalDTO)
+    fun updateAnimal(@PathVariable animalId: String, @RequestPart("data") animalDTO: AnimalDTO, @RequestPart("image", required = false) imageFile: MultipartFile?) : ResponseEntity<AnimalDTO> {
+        val updatedAnimal = animalFacade.updateAnimal(UUID.fromString(animalId), animalDTO, imageFile)
         return ok().body(updatedAnimal)
     }
 

@@ -17,6 +17,7 @@ class AnimalPersistenceConverter(
     fun animalEntityToAnimal(animalEntity: AnimalEntity): Animal {
         return Animal(
             id = animalEntity.id,
+            externalId = animalEntity.externalId,
             name = animalEntity.name,
             sex = animalEntity.sex?.let { SexEnum.valueOf(it.toString()) },
             acquisitionDate = animalEntity.acquisitionDate,
@@ -31,6 +32,7 @@ class AnimalPersistenceConverter(
     fun animalToAnimalEntity(animal: Animal): AnimalEntity {
         return AnimalEntity(
             id = animal.id,
+            externalId = animal.externalId,
             name = animal.name,
             sex = animal.sex?.let { SexEnumEntity.valueOf(it.toString()) },
             acquisitionDate = animal.acquisitionDate,

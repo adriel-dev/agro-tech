@@ -8,6 +8,7 @@ import java.util.UUID
 interface MonitoringFacade {
     fun saveMonitoring(saveMonitoringRequestDTO: SaveMonitoringRequestDTO): SaveMonitoringResponseDTO
     fun findMonitoringById(monitoringId: UUID): MonitoringDTO
+    fun findMonitoringsByAnimalId(animalId: UUID): List<MonitoringDTO>
     fun updateMonitoring(monitoringId: UUID, monitoringDTO: MonitoringDTO): MonitoringDTO
     fun deleteMonitoringById(monitoringId: UUID)
 }
