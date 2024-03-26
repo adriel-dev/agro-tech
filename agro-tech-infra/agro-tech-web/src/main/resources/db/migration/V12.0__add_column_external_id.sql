@@ -1,0 +1,1 @@
+ALTER TABLE tb_animal ADD COLUMN external_id VARCHAR(12) UNIQUE;

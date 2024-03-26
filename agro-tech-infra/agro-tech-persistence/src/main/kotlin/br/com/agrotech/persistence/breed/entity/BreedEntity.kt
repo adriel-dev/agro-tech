@@ -10,7 +10,7 @@ class BreedEntity(
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     var id: UUID? = null,
     var name: String? = null,
-    @OneToOne
+    @ManyToOne
     var species: SpeciesEntity? = null
 ) {
 
