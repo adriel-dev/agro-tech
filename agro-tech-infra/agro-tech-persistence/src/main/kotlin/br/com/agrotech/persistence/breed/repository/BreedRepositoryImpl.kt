@@ -30,6 +30,11 @@ open class BreedRepositoryImpl(
         return breedConverter.breedEntityToBreed(foundBreed)
     }
 
+    override fun findBreedsBySpeciesId(speciesId: UUID): List<Breed> {
+        val breedsList = breedJpaRepository.findBreedsBySpeciesId(speciesId)
+        return breedsList.map { breedConverter.breedEntityToBreed(it) }
+    }
+
     override fun findAllBreeds(): List<Breed> {
         return breedJpaRepository.findAll().map { breedConverter.breedEntityToBreed(it) }
     }
