@@ -45,9 +45,6 @@ class AnimalController(
         @RequestParam(required = false) externalId: String?,
         authentication: Authentication)
     : ResponseEntity<DomainPage<FindAllAnimalsResponseDTO>> {
-        println("Breed Ids: $breedsIds")
-        println("Animal Name: $animalName")
-        println("Animal Id: $externalId")
         val breedsIdsUuid = breedsIds?.map { UUID.fromString(it) }
         return ok().body(animalFacade.findAllAnimals(authentication, page, size, breedsIdsUuid, animalName, externalId))
     }
