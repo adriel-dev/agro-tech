@@ -49,7 +49,7 @@ class TokenService(
     }
 
     private fun generateExpirationDate(): Instant {
-        return LocalDateTime.now().plusHours(8).toInstant(ZoneOffset.of("-03:00"))
+        return LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.of("-03:00"))
     }
 
 }

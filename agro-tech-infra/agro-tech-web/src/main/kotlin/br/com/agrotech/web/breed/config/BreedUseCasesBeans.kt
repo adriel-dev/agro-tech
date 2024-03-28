@@ -23,6 +23,9 @@ open class BreedUseCasesBeans {
     open fun findAllBreeds(breedRepository: BreedRepository): FindAllBreeds = FindAllBreedsUseCase(breedRepository)
 
     @Bean
+    open fun findBreedsBySpeciesId(breedRepository: BreedRepository): FindBreedsBySpeciesId = FindBreedsBySpeciesIdUseCase(breedRepository)
+
+    @Bean
     open fun updateBreed(breedRepository: BreedRepository): UpdateBreed {
         return UpdateBreedUseCase(breedRepository)
     }

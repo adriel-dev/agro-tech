@@ -40,9 +40,13 @@ class AnimalController(
     fun findAll(
         @RequestParam(defaultValue = "0") @PositiveOrZero page: Int,
         @RequestParam(defaultValue = "10") @Positive @Max(100) size: Int,
+        @RequestParam(required = false) speciesIds: List<String>?,
+        @RequestParam(required = false) animalName: String?,
+        @RequestParam(required = false) externalId: String?,
         authentication: Authentication)
     : ResponseEntity<DomainPage<FindAllAnimalsResponseDTO>> {
-        return ok().body(animalFacade.findAllAnimals(authentication, page, size))
+        val speciesIdsUuid = speciesIds?.map { UUID.fromString(it) }
+        return ok().body(animalFacade.findAllAnimals(authentication, page, size, speciesIdsUuid, animalName, externalId))
     }
 
     @PutMapping("/update/{animalId}")

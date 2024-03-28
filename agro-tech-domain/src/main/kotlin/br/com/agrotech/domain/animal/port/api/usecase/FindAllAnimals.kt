@@ -5,5 +5,5 @@ import br.com.agrotech.domain.pagination.DomainPage
 import java.util.*
 
 interface FindAllAnimals {
-    fun find(farmId: UUID, page: Int, size: Int): DomainPage<Animal>
+    fun find(farmId: UUID, page: Int, size: Int, speciesIds: List<UUID>?, animalName: String?, externalId: String?): DomainPage<Animal>
 }

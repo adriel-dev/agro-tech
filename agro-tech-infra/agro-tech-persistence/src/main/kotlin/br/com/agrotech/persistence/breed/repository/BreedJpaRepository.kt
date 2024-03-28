@@ -7,4 +7,5 @@ import java.util.UUID
 
 @Repository
 interface BreedJpaRepository : JpaRepository<BreedEntity, UUID> {
+    fun findBreedsBySpeciesId(speciesId: UUID): List<BreedEntity>
 }

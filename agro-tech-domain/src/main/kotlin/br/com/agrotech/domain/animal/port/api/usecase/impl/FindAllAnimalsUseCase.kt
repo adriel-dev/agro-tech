@@ -10,8 +10,16 @@ class FindAllAnimalsUseCase(
     private val animalRepository: AnimalRepository
 ) : FindAllAnimals {
 
-    override fun find(farmId: UUID, page: Int, size: Int): DomainPage<Animal> {
-        return animalRepository.findAllAnimals(farmId, page, size)
+    override fun find(
+        farmId: UUID, page: Int, size: Int,
+        speciesIds: List<UUID>?, animalName: String?, externalId: String?
+    ): DomainPage<Animal> {
+        return when {
+            externalId != null -> animalRepository.findAnimalByExternalId(farmId, externalId)
+            animalName != null -> animalRepository.findAllAnimalsByName(farmId, page, size, animalName)
+            speciesIds != null -> animalRepository.findAllAnimalsBySpecies(farmId, page, size, speciesIds)
+            else -> animalRepository.findAllAnimals(farmId, page, size)
+        }
     }
 
 }

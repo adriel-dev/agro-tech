@@ -10,4 +10,7 @@ import java.util.*
 @Repository
 interface AnimalJpaRepository : JpaRepository<AnimalEntity, UUID> {
     fun findAllByFarmIdOrderByCreatedDateDesc(farmId: UUID, pageable: Pageable): Page<AnimalEntity>
+    fun findAnimalByFarmIdAndExternalId(farmId: UUID, externalId: String): AnimalEntity
+    fun findAllByFarmIdAndNameOrderByCreatedDateDesc(farmId: UUID, name: String, pageable: Pageable): Page<AnimalEntity>
+    fun findAllByFarmIdAndBreedSpeciesIdInOrderByCreatedDateDesc(farmId: UUID, breedsIds: List<UUID>, pageable: Pageable): Page<AnimalEntity>
 }

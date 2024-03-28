@@ -62,6 +62,26 @@ open class AnimalRepositoryImpl(
         return DomainPage(animalList, animalsPage.totalPages, animalsPage.totalElements, animalsPage.size, animalsPage.number)
     }
 
+    override fun findAnimalByExternalId(farmId: UUID, externalId: String): DomainPage<Animal> {
+        val foundAnimal: AnimalEntity = animalJpaRepository.findAnimalByFarmIdAndExternalId(farmId, externalId)
+        val domainAnimal = animalConverter.animalEntityToAnimal(foundAnimal)
+        return DomainPage(listOf(domainAnimal), 1, 1, 10, 0)
+    }
+
+    override fun findAllAnimalsByName(farmId: UUID, page: Int, size: Int, animalName: String): DomainPage<Animal> {
+        val pageable: Pageable = PageRequest.of(page, size)
+        val animalsPage: Page<AnimalEntity> = animalJpaRepository.findAllByFarmIdAndNameOrderByCreatedDateDesc(farmId, animalName, pageable)
+        val animalList = animalsPage.map { animalConverter.animalEntityToAnimal(it) }.toList()
+        return DomainPage(animalList, animalsPage.totalPages, animalsPage.totalElements, animalsPage.size, animalsPage.number)
+    }
+
+    override fun findAllAnimalsBySpecies(farmId: UUID, page: Int, size: Int, speciesIds: List<UUID>): DomainPage<Animal> {
+        val pageable: Pageable = PageRequest.of(page, size)
+        val animalsPage: Page<AnimalEntity> = animalJpaRepository.findAllByFarmIdAndBreedSpeciesIdInOrderByCreatedDateDesc(farmId, speciesIds, pageable)
+        val animalList = animalsPage.map { animalConverter.animalEntityToAnimal(it) }.toList()
+        return DomainPage(animalList, animalsPage.totalPages, animalsPage.totalElements, animalsPage.size, animalsPage.number)
+    }
+
     @Transactional
     override fun deleteAnimalById(animalId: UUID) {
         imageJpaRepository.deleteByAnimalId(animalId)

@@ -6,6 +6,7 @@ import java.util.UUID
 interface BreedRepository {
     fun findAllBreeds(): List<Breed>
     fun findBreedById(breedId: UUID): Breed
+    fun findBreedsBySpeciesId(speciesId: UUID): List<Breed>
     fun saveBreed(breed: Breed): Breed
     fun updateBreed(breedId: UUID, breed: Breed): Breed
     fun deleteBreedById(breedId: UUID)

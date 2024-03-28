@@ -17,6 +17,7 @@ class BreedController(
     private val saveBreed: SaveBreed,
     private val findBreedById: FindBreedById,
     private val findAllBreeds: FindAllBreeds,
+    private val findBreedsBySpeciesId: FindBreedsBySpeciesId,
     private val updateBreed: UpdateBreed,
     private val deleteBreedById: DeleteBreedById,
     private val breedConverter: BreedWebConverter
@@ -39,6 +40,12 @@ class BreedController(
     fun findBreed(@PathVariable breedId: String): ResponseEntity<BreedDTO> {
         val foundBreed = breedConverter.breedToBreedDto(findBreedById.find(UUID.fromString(breedId)))
         return ok().body(foundBreed)
+    }
+
+    @GetMapping("/find/species/{speciesId}")
+    fun findBySpeciesId(@PathVariable speciesId: String): ResponseEntity<List<BreedDTO>> {
+        val breedList = findBreedsBySpeciesId.find(UUID.fromString(speciesId)).map { breedConverter.breedToBreedDto(it) }
+        return ok().body(breedList)
     }
 
     @PutMapping("/update/{breedId}")
