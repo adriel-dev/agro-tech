@@ -40,9 +40,16 @@ class AnimalController(
     fun findAll(
         @RequestParam(defaultValue = "0") @PositiveOrZero page: Int,
         @RequestParam(defaultValue = "10") @Positive @Max(100) size: Int,
+        @RequestParam(required = false) breedsIds: List<String>?,
+        @RequestParam(required = false) animalName: String?,
+        @RequestParam(required = false) externalId: String?,
         authentication: Authentication)
     : ResponseEntity<DomainPage<FindAllAnimalsResponseDTO>> {
-        return ok().body(animalFacade.findAllAnimals(authentication, page, size))
+        println("Breed Ids: $breedsIds")
+        println("Animal Name: $animalName")
+        println("Animal Id: $externalId")
+        val breedsIdsUuid = breedsIds?.map { UUID.fromString(it) }
+        return ok().body(animalFacade.findAllAnimals(authentication, page, size, breedsIdsUuid, animalName, externalId))
     }
 
     @PutMapping("/update/{animalId}")
