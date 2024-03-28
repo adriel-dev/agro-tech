@@ -12,5 +12,5 @@ interface AnimalRepository {
     fun findAllAnimals(farmId: UUID, page: Int, size: Int): DomainPage<Animal>
     fun findAnimalByExternalId(farmId: UUID, externalId: String): DomainPage<Animal>
     fun findAllAnimalsByName(farmId: UUID, page: Int, size: Int, animalName: String): DomainPage<Animal>
-    fun findAllAnimalsByBreeds(farmId: UUID, page: Int, size: Int, breedsIds: List<UUID>): DomainPage<Animal>
+    fun findAllAnimalsBySpecies(farmId: UUID, page: Int, size: Int, speciesIds: List<UUID>): DomainPage<Animal>
 }

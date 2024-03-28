@@ -15,7 +15,7 @@ interface AnimalFacade {
     fun findAnimalById(animalId: UUID): FindAnimalByIdResponseDTO
     fun findAllAnimals(
         authentication: Authentication, page: Int, size: Int,
-        breedsIds: List<UUID>?, animalName: String?, externalId: String?
+        speciesIds: List<UUID>?, animalName: String?, externalId: String?
     ): DomainPage<FindAllAnimalsResponseDTO>
     fun updateAnimal(animalId: UUID, animalDto: AnimalDTO, imageFile: MultipartFile?): AnimalDTO
     fun deleteAnimalById(animalId: UUID)

@@ -59,11 +59,11 @@ open class AnimalFacadeImpl(
 
     override fun findAllAnimals(
         authentication: Authentication, page: Int, size: Int,
-        breedsIds: List<UUID>?, animalName: String?, externalId: String?
+        speciesIds: List<UUID>?, animalName: String?, externalId: String?
     ): DomainPage<FindAllAnimalsResponseDTO> {
         val user = authentication.principal as UserEntity
         val farmId = user.farm?.id!!
-        val domainPageAnimals = findAllAnimals.find(farmId, page, size, breedsIds, animalName, externalId)
+        val domainPageAnimals = findAllAnimals.find(farmId, page, size, speciesIds, animalName, externalId)
         val responseDomainPageAnimals = domainPageAnimals.content.map { animalConverter.animalToFindAllAnimalsResponseDTO(it, "") }
         return DomainPage(responseDomainPageAnimals, domainPageAnimals.totalPages, domainPageAnimals.totalElements, domainPageAnimals.pageSize, domainPageAnimals.pageNumber)
     }

@@ -12,12 +12,12 @@ class FindAllAnimalsUseCase(
 
     override fun find(
         farmId: UUID, page: Int, size: Int,
-        breedsIds: List<UUID>?, animalName: String?, externalId: String?
+        speciesIds: List<UUID>?, animalName: String?, externalId: String?
     ): DomainPage<Animal> {
         return when {
             externalId != null -> animalRepository.findAnimalByExternalId(farmId, externalId)
             animalName != null -> animalRepository.findAllAnimalsByName(farmId, page, size, animalName)
-            breedsIds != null -> animalRepository.findAllAnimalsByBreeds(farmId, page, size, breedsIds)
+            speciesIds != null -> animalRepository.findAllAnimalsBySpecies(farmId, page, size, speciesIds)
             else -> animalRepository.findAllAnimals(farmId, page, size)
         }
     }

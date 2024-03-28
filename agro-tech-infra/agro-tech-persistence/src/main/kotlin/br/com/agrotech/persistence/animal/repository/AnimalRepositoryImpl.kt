@@ -75,9 +75,9 @@ open class AnimalRepositoryImpl(
         return DomainPage(animalList, animalsPage.totalPages, animalsPage.totalElements, animalsPage.size, animalsPage.number)
     }
 
-    override fun findAllAnimalsByBreeds(farmId: UUID, page: Int, size: Int, breedsIds: List<UUID>): DomainPage<Animal> {
+    override fun findAllAnimalsBySpecies(farmId: UUID, page: Int, size: Int, speciesIds: List<UUID>): DomainPage<Animal> {
         val pageable: Pageable = PageRequest.of(page, size)
-        val animalsPage: Page<AnimalEntity> = animalJpaRepository.findAllByFarmIdAndBreedIdInOrderByCreatedDateDesc(farmId, breedsIds, pageable)
+        val animalsPage: Page<AnimalEntity> = animalJpaRepository.findAllByFarmIdAndBreedSpeciesIdInOrderByCreatedDateDesc(farmId, speciesIds, pageable)
         val animalList = animalsPage.map { animalConverter.animalEntityToAnimal(it) }.toList()
         return DomainPage(animalList, animalsPage.totalPages, animalsPage.totalElements, animalsPage.size, animalsPage.number)
     }
