@@ -41,7 +41,8 @@ class TaskController(
     }
 
     @PostMapping("/save")
-    fun createTask(createTaskRequestDTO: CreateTaskRequestDTO): ResponseEntity<TaskDTO> {
+    fun createTask(@RequestBody createTaskRequestDTO: CreateTaskRequestDTO): ResponseEntity<TaskDTO> {
+        println(createTaskRequestDTO)
         val taskToCreate = taskWebConverter.createTaskRequestDtoToTask(createTaskRequestDTO)
         val createdTask = createTask.create((taskToCreate))
         return status(HttpStatus.CREATED).body(taskWebConverter.taskToTaskDto(createdTask))
