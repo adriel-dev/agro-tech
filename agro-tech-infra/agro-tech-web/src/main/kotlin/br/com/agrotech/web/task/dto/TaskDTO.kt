@@ -1,10 +1,12 @@
 package br.com.agrotech.web.task.dto
 
 import br.com.agrotech.web.employee.dto.EmployeeDTO
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
+@JsonIgnoreProperties("employee", "deleted")
 data class TaskDTO(
     var id: UUID? = null,
     var title: String? = null,

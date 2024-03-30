@@ -2,12 +2,15 @@ package br.com.agrotech.persistence.task.converter
 
 import br.com.agrotech.domain.task.model.Task
 import br.com.agrotech.domain.task.model.TaskStatus
+import br.com.agrotech.persistence.employee.converter.EmployeePersistenceConverter
 import br.com.agrotech.persistence.task.entity.TaskEntity
 import br.com.agrotech.persistence.task.entity.TaskStatusEntity
 import org.springframework.stereotype.Component
 
 @Component
-class TaskPersistenceConverter {
+class TaskPersistenceConverter(
+    private val employeePersistenceConverter: EmployeePersistenceConverter
+) {
 
     fun taskToTaskEntity(task: Task): TaskEntity {
         return TaskEntity(
@@ -15,6 +18,7 @@ class TaskPersistenceConverter {
             title = task.title,
             description = task.description,
             status = task.status?.let { TaskStatusEntity.valueOf(it.toString()) },
+            employee = task.employee?.let { employeePersistenceConverter.employeeToEmployeeEntity(it) },
             startDate = task.startDate,
             startedAt = task.startedAt,
             finishUntil = task.finishUntil,
@@ -32,6 +36,7 @@ class TaskPersistenceConverter {
             title = taskEntity.title,
             description = taskEntity.description,
             status = taskEntity.status?.let { TaskStatus.valueOf(it.toString()) },
+            employee = taskEntity.employee?.let { employeePersistenceConverter.employeeEntityToEmployee(it) },
             startDate = taskEntity.startDate,
             startedAt = taskEntity.startedAt,
             finishUntil = taskEntity.finishUntil,

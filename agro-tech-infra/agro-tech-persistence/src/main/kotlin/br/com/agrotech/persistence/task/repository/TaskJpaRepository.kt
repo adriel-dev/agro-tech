@@ -10,5 +10,5 @@ import java.util.UUID
 
 @Repository
 interface TaskJpaRepository : JpaRepository<TaskEntity, UUID> {
-    fun findAllByEmployeeIdAndStartDate(employeeId: UUID, startDate: LocalDateTime, pageable: Pageable): Page<TaskEntity>
+    fun findAllByEmployeeIdAndStartDateBetweenAndIsDeletedFalse(employeeId: UUID, startDate: LocalDateTime, endDate: LocalDateTime, pageable: Pageable): Page<TaskEntity>
 }

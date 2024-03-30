@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.util.*
 
 
@@ -31,8 +31,8 @@ class TaskController(
     fun findAllByDate(
         @RequestParam(defaultValue = "0") @PositiveOrZero page: Int,
         @RequestParam(defaultValue = "10") @Positive @Max(100) size: Int,
-        @RequestParam employeeId: String,
-        @RequestParam startDate: LocalDateTime
+        @RequestParam(required = true) employeeId: String,
+        @RequestParam(required = true) startDate: LocalDate
     ): ResponseEntity<DomainPage<TaskDTO>> {
         val domainPagedTasks = findAllTasksByStartDate.find(page, size, UUID.fromString(employeeId), startDate)
         val tasksContent = domainPagedTasks.content.map { taskWebConverter.taskToTaskDto(it) }
@@ -42,7 +42,6 @@ class TaskController(
 
     @PostMapping("/save")
     fun createTask(@RequestBody createTaskRequestDTO: CreateTaskRequestDTO): ResponseEntity<TaskDTO> {
-        println(createTaskRequestDTO)
         val taskToCreate = taskWebConverter.createTaskRequestDtoToTask(createTaskRequestDTO)
         val createdTask = createTask.create((taskToCreate))
         return status(HttpStatus.CREATED).body(taskWebConverter.taskToTaskDto(createdTask))
