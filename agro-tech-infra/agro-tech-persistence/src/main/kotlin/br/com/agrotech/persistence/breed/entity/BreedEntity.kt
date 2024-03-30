@@ -15,8 +15,8 @@ class BreedEntity(
 ) {
 
     fun updateFrom(breedEntity: BreedEntity) {
-        this.name = breedEntity.name ?: this.name
-        this.species = breedEntity.species ?: this.species
+        breedEntity.name?.let { this.name = it }
+        breedEntity.species?.let { this.species = it }
     }
 
 }

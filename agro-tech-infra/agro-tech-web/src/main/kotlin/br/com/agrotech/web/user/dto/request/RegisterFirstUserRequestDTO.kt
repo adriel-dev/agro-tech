@@ -6,3 +6,9 @@ data class RegisterFirstUserRequestDTO(
     val userData: RegisterFirstUserDataRequestDTO? = null,
     val farmData: SaveFirstFarmRequestDTO? = null
 )
+
+data class RegisterFirstUserDataRequestDTO(
+    val username: String? = null,
+    val password: String? = null,
+    val email: String? = null
+)

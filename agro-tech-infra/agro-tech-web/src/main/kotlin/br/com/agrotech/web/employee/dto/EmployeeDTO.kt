@@ -4,7 +4,7 @@ import br.com.agrotech.web.farm.dto.FarmDTO
 import java.time.LocalDate
 import java.util.*
 
-class EmployeeDTO(
+data class EmployeeDTO(
     val id: UUID? = null,
     val name: String? = null,
     val lastName: String? = null,
