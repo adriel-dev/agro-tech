@@ -20,12 +20,12 @@ class EmployeeEntity (
 ) {
 
     fun updateFrom(employeeEntity: EmployeeEntity) {
-        this.name = employeeEntity.name ?: this.name
-        this.lastName = employeeEntity.lastName ?: this.lastName
-        this.birthDate = employeeEntity.birthDate ?: this.birthDate
-        this.role = employeeEntity.role ?: this.role
-        this.salary = employeeEntity.salary ?: this.salary
-        this.farm = employeeEntity.farm ?: this.farm
+        employeeEntity.name?.let { this.name = it }
+        employeeEntity.lastName?.let { this.lastName = it }
+        employeeEntity.birthDate?.let { this.birthDate = it }
+        employeeEntity.role?.let { this.role = it }
+        employeeEntity.salary?.let { this.salary = it }
+        employeeEntity.farm?.let { this.farm = it }
     }
 
 }

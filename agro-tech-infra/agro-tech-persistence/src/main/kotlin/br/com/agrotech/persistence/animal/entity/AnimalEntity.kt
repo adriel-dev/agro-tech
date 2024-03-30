@@ -54,19 +54,19 @@ class AnimalEntity(
 ) {
 
     fun updateFrom(animalEntity: AnimalEntity) {
-        this.externalId = animalEntity.externalId
-        this.name = animalEntity.name ?: this.name
-        this.sex = animalEntity.sex ?: this.sex
-        this.acquisitionDate = animalEntity.acquisitionDate ?: this.acquisitionDate
-        this.saleDate = animalEntity.saleDate ?: this.saleDate
-        this.acquisitionValue = animalEntity.acquisitionValue ?: acquisitionValue
-        this.saleValue = animalEntity.saleValue ?: this.saleValue
-        this.breed = animalEntity.breed ?: this.breed
-        this.farm = animalEntity.farm ?: this.farm
-        this.createdBy = animalEntity.createdBy
-        this.createdDate = animalEntity.createdDate
-        this.lastModifiedBy = animalEntity.lastModifiedBy
-        this.lastModifiedDate = animalEntity.lastModifiedDate
+        animalEntity.externalId?.let { this.externalId = it }
+        animalEntity.name?.let { this.name = it }
+        animalEntity.sex?.let { this.sex = it }
+        animalEntity.acquisitionDate?.let { this.acquisitionDate = it }
+        animalEntity.saleDate?.let { this.saleDate = it }
+        animalEntity.acquisitionValue?.let { this.acquisitionValue = it }
+        animalEntity.saleValue?.let { this.saleValue = it }
+        animalEntity.breed?.let { this.breed = it }
+        animalEntity.farm?.let { this.farm = it }
+        animalEntity.createdBy?.let { this.createdBy = it }
+        animalEntity.createdDate?.let { this.createdDate = it }
+        animalEntity.lastModifiedBy?.let { this.lastModifiedBy = it }
+        animalEntity.lastModifiedDate?.let { this.lastModifiedDate = it }
     }
 
     @PrePersist

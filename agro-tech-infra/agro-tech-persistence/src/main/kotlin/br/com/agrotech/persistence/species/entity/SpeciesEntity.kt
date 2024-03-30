@@ -12,7 +12,7 @@ class SpeciesEntity(
 ) {
 
     fun updateFrom(speciesEntity: SpeciesEntity) {
-        this.name = speciesEntity.name ?: this.name
+        speciesEntity.name?.let { this.name = it }
     }
 
 }

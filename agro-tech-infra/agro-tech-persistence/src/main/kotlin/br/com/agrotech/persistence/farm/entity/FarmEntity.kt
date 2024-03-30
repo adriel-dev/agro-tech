@@ -15,10 +15,10 @@ class FarmEntity(
 ) {
 
     fun updateFrom(farmEntity: FarmEntity) {
-        this.name = farmEntity.name ?: this.name
-        this.address = farmEntity.address ?: this.address
-        this.city = farmEntity.city ?: this.city
-        this.state = farmEntity.state ?: this.state
+        farmEntity.name?.let { this.name = it }
+        farmEntity.address?.let { this.address = it }
+        farmEntity.city?.let { this.city = it }
+        farmEntity.state?.let { this.state = it }
     }
 
 }
