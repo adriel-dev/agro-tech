@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Repository
-class TaskRepositoryImpl(
+open class TaskRepositoryImpl(
     private val taskJpaRepository: TaskJpaRepository,
     private val taskConverter: TaskPersistenceConverter
 ) : TaskRepository {
