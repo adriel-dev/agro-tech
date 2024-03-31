@@ -16,6 +16,9 @@ open class TaskUseCasesBeans {
     open fun createTask(taskRepository: TaskRepository): CreateTask = CreateTaskUseCase(taskRepository)
 
     @Bean
+    open fun updateTask(taskRepository: TaskRepository): UpdateTask = UpdateTaskUseCase(taskRepository)
+
+    @Bean
     open fun markTaskAsDoing(taskRepository: TaskRepository): MarkTaskAsDoing = MarkTaskAsDoingUseCase(taskRepository)
 
     @Bean

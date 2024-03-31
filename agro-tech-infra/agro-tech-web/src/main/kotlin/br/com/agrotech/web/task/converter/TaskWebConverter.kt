@@ -7,6 +7,7 @@ import br.com.agrotech.web.employee.converter.EmployeeWebConverter
 import br.com.agrotech.web.task.dto.TaskDTO
 import br.com.agrotech.web.task.dto.TaskStatusDTO
 import br.com.agrotech.web.task.dto.request.CreateTaskRequestDTO
+import br.com.agrotech.web.task.dto.request.UpdateTaskRequestDTO
 import org.springframework.stereotype.Component
 
 @Component
@@ -59,6 +60,16 @@ class TaskWebConverter(
             employee = Employee(id = createTaskRequestDTO.employeeId),
             startDate = createTaskRequestDTO.startDate,
             finishUntil = createTaskRequestDTO.finishUntil
+        )
+    }
+
+
+    fun updateTaskRequestDtoToTask(updateTaskRequestDTO: UpdateTaskRequestDTO): Task {
+        return Task(
+            title = updateTaskRequestDTO.title,
+            description = updateTaskRequestDTO.description,
+            startDate = updateTaskRequestDTO.startDate,
+            finishUntil = updateTaskRequestDTO.finishUntil
         )
     }
 
