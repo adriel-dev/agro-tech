@@ -49,7 +49,7 @@ class TaskController(
         return status(HttpStatus.CREATED).body(taskConverter.taskToTaskDto(createdTask))
     }
 
-    @PutMapping("/status/update/{taskId}")
+    @PutMapping("/update/{taskId}")
     fun updateTask(@PathVariable taskId: String, @RequestBody updateTaskRequestDTO: UpdateTaskRequestDTO): ResponseEntity<TaskDTO> {
         val updatedTask = updateTask.update(taskConverter.updateTaskRequestDtoToTask(updateTaskRequestDTO))
         return ok().body(taskConverter.taskToTaskDto(updatedTask))
