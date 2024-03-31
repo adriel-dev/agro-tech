@@ -1,9 +1,11 @@
 package br.com.agrotech.persistence.task.repository
 
 import br.com.agrotech.domain.pagination.DomainPage
+import br.com.agrotech.domain.task.exception.TaskUpdateNotAllowedException
 import br.com.agrotech.domain.task.model.Task
 import br.com.agrotech.domain.task.port.spi.persistence.TaskRepository
 import br.com.agrotech.persistence.task.converter.TaskPersistenceConverter
+import br.com.agrotech.persistence.task.entity.TaskStatusEntity
 import br.com.agrotech.persistence.task.exception.TaskNotFoundException
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -45,6 +47,9 @@ open class TaskRepositoryImpl(
     override fun updateTask(task: Task): Task {
         val taskId = task.id!!
         val taskToUpdate = taskJpaRepository.findById(taskId).orElseThrow { TaskNotFoundException(taskId) }
+        if(taskToUpdate.status == TaskStatusEntity.DONE) {
+            throw TaskUpdateNotAllowedException("Task with 'DONE' status cannot be updated!")
+        }
         val taskEntity = taskConverter.taskToTaskEntity(task)
         taskToUpdate.updateFrom(taskEntity)
         return taskConverter.taskEntityToTask(taskJpaRepository.save(taskToUpdate))
