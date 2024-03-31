@@ -10,10 +10,12 @@ class UpdateTaskUseCase(
 ) : UpdateTask {
 
     override fun update(task: Task): Task {
-        val startDate = task.startDate!!
-        val finishUntil = task.finishUntil!!
-        if(startDate.isAfter(finishUntil)) {
-            throw InvalidStartDateException(startDate, finishUntil)
+        val startDate = task.startDate
+        val finishUntil = task.finishUntil
+        if(startDate != null && finishUntil != null) {
+            if(startDate.isAfter(finishUntil)) {
+                throw InvalidStartDateException(startDate, finishUntil)
+            }
         }
         return taskRepository.updateTask(task)
     }
