@@ -31,15 +31,13 @@ class TaskController(
 
     @GetMapping("/all")
     fun findAllByDate(
-        @RequestParam(defaultValue = "0") @PositiveOrZero page: Int,
-        @RequestParam(defaultValue = "10") @Positive @Max(100) size: Int,
         @RequestParam(required = true) employeeId: String,
-        @RequestParam(required = true) startDate: LocalDate
-    ): ResponseEntity<DomainPage<TaskDTO>> {
-        val domainPagedTasks = findAllTasksByStartDate.find(page, size, UUID.fromString(employeeId), startDate)
-        val tasksContent = domainPagedTasks.content.map { taskConverter.taskToTaskDto(it) }
-        val tasksPage = DomainPage(tasksContent, domainPagedTasks.totalPages, domainPagedTasks.totalElements, domainPagedTasks.pageSize, domainPagedTasks.pageNumber)
-        return ok().body(tasksPage)
+        @RequestParam(required = true) startDate: LocalDate,
+        @RequestParam(required = true) endDate: LocalDate
+    ): ResponseEntity<List<TaskDTO>> {
+        val tasksList = findAllTasksByStartDate.find(UUID.fromString(employeeId), startDate, endDate)
+        val tasksDtoList = tasksList.map { taskConverter.taskToTaskDto(it) }
+        return ok().body(tasksDtoList)
     }
 
     @PostMapping("/save")

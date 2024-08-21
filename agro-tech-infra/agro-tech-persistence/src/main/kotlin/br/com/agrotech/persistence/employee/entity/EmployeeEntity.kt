@@ -16,7 +16,8 @@ class EmployeeEntity (
     var role: String? = null,
     var salary: Double? = null,
     @ManyToOne @JoinColumn(name = "farm_id")
-    var farm: FarmEntity? = null
+    var farm: FarmEntity? = null,
+    var isDeleted: Boolean = false
 ) {
 
     fun updateFrom(employeeEntity: EmployeeEntity) {
@@ -26,6 +27,7 @@ class EmployeeEntity (
         employeeEntity.role?.let { this.role = it }
         employeeEntity.salary?.let { this.salary = it }
         employeeEntity.farm?.let { this.farm = it }
+        this.isDeleted = employeeEntity.isDeleted
     }
 
 }

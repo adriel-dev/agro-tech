@@ -11,5 +11,12 @@ data class Employee(
     var birthDate: LocalDate? = null,
     var role: String? = null,
     var salary: Double? = null,
-    var farm: Farm? = null
-)
+    var farm: Farm? = null,
+    var isDeleted: Boolean = false
+) {
+
+    fun logicalDelete() {
+        this.isDeleted = true
+    }
+
+}

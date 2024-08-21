@@ -9,7 +9,9 @@ class DeleteEmployeeByIdUseCase(
 ) : DeleteEmployeeById {
 
     override fun delete(employeeId: UUID) {
-        employeeRepository.deleteEmployeeById(employeeId)
+        val foundEmployee = employeeRepository.findEmployeeById(employeeId)
+        foundEmployee.logicalDelete()
+        employeeRepository.saveEmployee(foundEmployee)
     }
 
 }
