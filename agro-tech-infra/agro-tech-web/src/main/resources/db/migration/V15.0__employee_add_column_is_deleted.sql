@@ -1,0 +1,1 @@
+ALTER TABLE tb_employee ADD COLUMN is_deleted boolean;
