@@ -5,7 +5,7 @@ import br.com.agrotech.web.farm.dto.FarmDTO
 import java.time.LocalDate
 import java.util.*
 
-class AnimalDTO(
+data class AnimalDTO(
     val id: UUID? = null,
     var externalId: String? = null,
     val name: String? = null,

@@ -19,11 +19,11 @@ class MonitoringEntity (
 ) {
 
     fun updateFrom(monitoringEntity: MonitoringEntity) {
-        this.animal = monitoringEntity.animal ?: this.animal
-        this.monitoringDate = monitoringEntity.monitoringDate ?: this.monitoringDate
-        this.height = monitoringEntity.height ?: this.height
-        this.weight = monitoringEntity.weight ?: this.weight
-        this.dewormed = monitoringEntity.dewormed ?: this.dewormed
+        monitoringEntity.animal?.let { this.animal = it }
+        monitoringEntity.monitoringDate?.let { this.monitoringDate = it }
+        monitoringEntity.height?.let { this.height = it }
+        monitoringEntity.weight?.let { this.weight = it }
+        monitoringEntity.dewormed?.let { this.dewormed = it }
     }
 
 }

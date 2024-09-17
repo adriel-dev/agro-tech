@@ -1,13 +1,14 @@
 package br.com.agrotech.web.employee
 
-import br.com.agrotech.domain.employee.port.api.usecase.SaveEmployee
-import br.com.agrotech.domain.employee.port.api.usecase.FindEmployeeById
-import br.com.agrotech.domain.employee.port.api.usecase.UpdateEmployee
-import br.com.agrotech.domain.employee.port.api.usecase.DeleteEmployeeById
+import br.com.agrotech.domain.employee.port.api.usecase.*
+import br.com.agrotech.domain.pagination.DomainPage
 import br.com.agrotech.web.employee.converter.EmployeeWebConverter
 import br.com.agrotech.web.employee.dto.EmployeeDTO
 import br.com.agrotech.web.employee.dto.request.SaveEmployeeRequestDTO
 import br.com.agrotech.web.employee.dto.response.SaveEmployeeResponseDTO
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Positive
+import jakarta.validation.constraints.PositiveOrZero
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
@@ -19,6 +20,7 @@ import java.util.*
 class EmployeeController(
     private val saveEmployee: SaveEmployee,
     private val findEmployeeById: FindEmployeeById,
+    private val findAllEmployees: FindAllEmployees,
     private val updateEmployee: UpdateEmployee,
     private val deleteEmployeeById: DeleteEmployeeById,
     private val employeeConverter: EmployeeWebConverter
@@ -35,6 +37,17 @@ class EmployeeController(
     fun findEmployee(@PathVariable employeeId: String): ResponseEntity<EmployeeDTO> {
         val foundEmployee = employeeConverter.employeeToEmployeeDto(findEmployeeById.find(UUID.fromString(employeeId)))
         return ok().body(foundEmployee)
+    }
+
+    @GetMapping("/find/all/{farmId}")
+    fun findAllEmployeesByFarmId(
+        @RequestParam(defaultValue = "0") @PositiveOrZero page: Int,
+        @RequestParam(defaultValue = "10") @Positive @Max(100) size: Int,
+        @PathVariable farmId: String
+    ): ResponseEntity<DomainPage<EmployeeDTO>> {
+        val employeesPage = findAllEmployees.find(UUID.fromString(farmId), page, size)
+        val employeesList = employeesPage.content.map { employeeConverter.employeeToEmployeeDto(it) }
+        return ok().body(DomainPage(employeesList, employeesPage.totalPages, employeesPage.totalElements, employeesPage.pageSize, employeesPage.pageNumber))
     }
 
     @PutMapping("/update/{employeeId}")

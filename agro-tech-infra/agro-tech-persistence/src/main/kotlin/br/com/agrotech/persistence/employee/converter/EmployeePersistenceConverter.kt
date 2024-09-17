@@ -16,7 +16,8 @@ class EmployeePersistenceConverter(private val farmConverter: FarmPersistenceCon
             employeeEntity.birthDate,
             employeeEntity.role,
             employeeEntity.salary,
-            employeeEntity.farm?.let { farmConverter.farmEntityToFarm(it) }
+            employeeEntity.farm?.let { farmConverter.farmEntityToFarm(it) },
+            employeeEntity.isDeleted
         )
     }
 
@@ -28,7 +29,8 @@ class EmployeePersistenceConverter(private val farmConverter: FarmPersistenceCon
             employee.birthDate,
             employee.role,
             employee.salary,
-            employee.farm?.let { farmConverter.farmToFarmEntity(it) }
+            employee.farm?.let { farmConverter.farmToFarmEntity(it) },
+            employee.isDeleted
         )
     }
 

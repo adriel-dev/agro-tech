@@ -3,7 +3,10 @@ package br.com.agrotech.persistence.employee.repository
 import br.com.agrotech.persistence.employee.exception.EmployeeNotFoundException
 import br.com.agrotech.domain.employee.model.Employee
 import br.com.agrotech.domain.employee.port.spi.persistence.EmployeeRepository
+import br.com.agrotech.domain.pagination.DomainPage
 import br.com.agrotech.persistence.employee.converter.EmployeePersistenceConverter
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
@@ -30,8 +33,11 @@ open class EmployeeRepositoryImpl(
         return employeeConverter.employeeEntityToEmployee(foundEmployee)
     }
 
-    override fun findAllEmployees(): List<Employee> {
-        return employeeJpaRepository.findAll().map { employeeConverter.employeeEntityToEmployee(it) }
+    override fun findAllEmployees(farmId: UUID, page: Int, size: Int): DomainPage<Employee> {
+        val pageable: Pageable = PageRequest.of(page, size)
+        val employeePage = employeeJpaRepository.findAllByFarmIdAndIsDeletedFalseOrderByName(farmId, pageable)
+        val employeeList = employeePage.map { employeeConverter.employeeEntityToEmployee(it) }.toList()
+        return DomainPage(employeeList, employeePage.totalPages, employeePage.totalElements, employeePage.size, employeePage.number)
     }
 
     override fun deleteEmployeeById(employeeId: UUID) {
